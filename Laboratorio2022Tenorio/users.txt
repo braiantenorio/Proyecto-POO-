@@ -1,0 +1,10 @@
+101;Marcos Zarate;25;M;Buenos Aires;
+102;Carlos Diaz;30;M;Puerto Madryn;
+103;Daniela Medina;20;F;Trelew;
+104;Maria Soto;36;F;Cordoba;
+105;Mariano Perez;26;M;Puerto Madryn;
+106;Diego Correa;18;M;Bahia Blanca;
+107;Carolina Ferrari;40;F;Puerto Madryn;
+108;Diego Martinez;22;M;Rawson;
+109;Pedro Lopez;33;M;Comodoro Rivadavia;
+110;Monica Alvarez;60;F;Buenos Aires;
