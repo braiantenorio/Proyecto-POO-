@@ -17,6 +17,7 @@ import net.datastructures.TreeMap;
 import net.datastructures.Vertex;
 import net.datastructures.GraphAlgorithms;
 import net.datastructures.Map;
+import net.datastructures.Pair;
 import net.datastructures.Position;
 
 public class Calculo<V> {
@@ -127,6 +128,20 @@ public class Calculo<V> {
         for (Vertex<Usuario> usr : redSocial.vertices())
             answer.add(usr.getElement());
         return answer;
+
+    }
+
+    public List<Pair<Usuario, Integer>> mostrarAmigos() {
+        List<Pair<Usuario, Integer>> amigos = new ArrayList<Pair<Usuario, Integer>>();
+        Vertex<Usuario>[] arrayVertices;
+        for (Vertex<Usuario> usr : redSocial.vertices()) {
+            for (Edge<Relacion> relacionActual : redSocial.outgoingEdges(usr)) {
+                arrayVertices = redSocial.endVertices(relacionActual);
+                amigos.add(new Pair<Usuario, Integer>(arrayVertices[1].getElement(),
+                        relacionActual.getElement().gettSiendoAmigos()));
+            }
+        }
+        return amigos;
 
     }
 
