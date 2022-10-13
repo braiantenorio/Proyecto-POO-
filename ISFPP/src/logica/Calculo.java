@@ -131,18 +131,27 @@ public class Calculo<V> {
 
     }
 
-    public List<Pair<Usuario, Integer>> mostrarAmigos() {
+    public List<Pair<Usuario, Integer>> mostrarAmigos(Usuario usr) {
+        int i = 0;
+        Vertex<Usuario> usuario = null;
         List<Pair<Usuario, Integer>> amigos = new ArrayList<Pair<Usuario, Integer>>();
         Vertex<Usuario>[] arrayVertices;
-        for (Vertex<Usuario> usr : redSocial.vertices()) {
-            for (Edge<Relacion> relacionActual : redSocial.outgoingEdges(usr)) {
-                arrayVertices = redSocial.endVertices(relacionActual);
-                amigos.add(new Pair<Usuario, Integer>(arrayVertices[1].getElement(),
-                        relacionActual.getElement().gettSiendoAmigos()));
+        for (Vertex<Usuario> vertex : redSocial.vertices()) {
+            if (vertex.getElement().equals(usr)) {
+                usuario = vertex;
+                break;
             }
+        }
+        for (Edge<Relacion> relacionActual : redSocial.outgoingEdges(usuario)) {
+            arrayVertices = redSocial.endVertices(relacionActual);
+            if (arrayVertices[1].getElement().equals(usr))
+                i = 0;
+            else
+                i = 1;
+            amigos.add(new Pair<Usuario, Integer>(arrayVertices[i].getElement(),
+                    relacionActual.getElement().gettSiendoAmigos()));
         }
         return amigos;
 
     }
-
 }
