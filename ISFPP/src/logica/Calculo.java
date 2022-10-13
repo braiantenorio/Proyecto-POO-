@@ -131,27 +131,31 @@ public class Calculo<V> {
 
     }
 
-    public List<Pair<Usuario, Integer>> mostrarAmigos(Usuario usr) {
-        int i = 0;
-        Vertex<Usuario> usuario = null;
+    public List<Pair<Usuario, Integer>> mostrarAmigos(String usr) {
+        Vertex<Usuario> usuario = vertices.get(usr);
         List<Pair<Usuario, Integer>> amigos = new ArrayList<Pair<Usuario, Integer>>();
-        Vertex<Usuario>[] arrayVertices;
-        for (Vertex<Usuario> vertex : redSocial.vertices()) {
-            if (vertex.getElement().equals(usr)) {
-                usuario = vertex;
-                break;
-            }
-        }
         for (Edge<Relacion> relacionActual : redSocial.outgoingEdges(usuario)) {
-            arrayVertices = redSocial.endVertices(relacionActual);
-            if (arrayVertices[1].getElement().equals(usr))
-                i = 0;
-            else
-                i = 1;
-            amigos.add(new Pair<Usuario, Integer>(arrayVertices[i].getElement(),
+            amigos.add(new Pair<Usuario, Integer>(redSocial.opposite(usuario, relacionActual).getElement(),
                     relacionActual.getElement().gettSiendoAmigos()));
         }
         return amigos;
+    }
 
+    public Map<Integer, Pair<Usuario, Usuario>> usuariosDensConectados() {
+        Map<Integer, Pair<Usuario, Usuario>> interaccion = new TreeMap<>(Collections.reverseOrder());
+        for (Edge<Relacion> relacion : redSocial.edges()) {
+            interaccion.put(relacion.getElement().gettInterDiaria(),
+                    new Pair<Usuario, Usuario>(relacion.getElement().getUsr1(), relacion.getElement().getUsr2()));
+        }
+        return interaccion;
+    }
+
+    public List<Usuario> sugerenciaAmistad(String usr) {
+        List<Usuario> sugerencias = new ArrayList<Usuario>();
+        for (Edge<Relacion> relacionActual : redSocial.outgoingEdges(vertices.get(usr))) {
+
+        }
+
+        return sugerencias;
     }
 }

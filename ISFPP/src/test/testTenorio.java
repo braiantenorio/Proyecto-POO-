@@ -6,8 +6,8 @@ import logica.Calculo;
 import modelo.Relacion;
 import modelo.Usuario;
 import presentacion.Pantalla;
+import net.datastructures.Entry;
 import net.datastructures.Pair;
-
 
 import net.datastructures.TreeMap;
 
@@ -43,25 +43,29 @@ public class testTenorio {
 
         Calculo<Usuario> c = new Calculo<Usuario>(usuarios, relaciones);
 
-        for (Pair<Usuario,Integer> relacion : c.mostrarAmigos( usuarios.get("104"))) {
-            System.out.println(relacion.getFirst()+ " "+ relacion.getSecond() );
-            
-        }
-        ;
-
-
-
-       // Pantalla.mostrarUsuarios(c.mostrarUsuarios());
-
-        //Pantalla.gradoMedio(c.gradoMedio());
-
-        //Pantalla.centralidad(c.centralidad());
-
-
-/* 
         String src = "101";//Pantalla.ingresarUsuario1();
         String target ="105"; //Pantalla.ingresarUsuario2();
-        Pantalla.antiguedad(c.antiguedad(usuarios.get(src), usuarios.get(target)));
-*/
+
+        c.antiguedad(usuarios.get(src), usuarios.get(target));
+
+
+        for (Pair<Usuario, Integer> parActual : c.mostrarAmigos("101")) {
+            System.out.println(parActual.getFirst() + " " + parActual.getSecond());
+        }
+        
+        for (Entry<Integer, Pair<Usuario, Usuario>> entryActual : c.usuariosDensConectados().entrySet()) {
+            System.out.println(entryActual.getValue().getFirst() + " " + entryActual.getValue().getSecond() + " " + entryActual.getKey());    
+        }
+        
+
+        /*for (Entry<Integer,Pair<Usuario,Usuario>> actEntry : c.usuariosDensConectados().entrySet()) {
+            System.out.println(actEntry.getKey()+ " "+ actEntry.getValue().getFirst() + " " + actEntry.getValue().getSecond());
+        }*/
+
+        // Pantalla.mostrarUsuarios(c.mostrarUsuarios());
+
+        // Pantalla.gradoMedio(c.gradoMedio());
+
+        // Pantalla.centralidad(c.centralidad());         
     }
 }
