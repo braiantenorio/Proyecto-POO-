@@ -151,11 +151,16 @@ public class Calculo<V> {
     }
 
     public List<Usuario> sugerenciaAmistad(String usr) {
+        Vertex<Usuario> usuario = vertices.get(usr);
         List<Usuario> sugerencias = new ArrayList<Usuario>();
-        for (Edge<Relacion> relacionActual : redSocial.outgoingEdges(vertices.get(usr))) {
-
+        for (Edge<Relacion> relacionActual : redSocial.outgoingEdges(usuario)) {
+            Vertex<Usuario> A = redSocial.opposite(usuario, relacionActual);
+            for (Edge<Relacion> relacionActual2 : redSocial.outgoingEdges(A)) {
+                Usuario nuevo = redSocial.opposite(A, relacionActual2).getElement();
+                if (!sugerencias.contains(nuevo))
+                    sugerencias.add(nuevo);
+            }
         }
-
         return sugerencias;
     }
 }
