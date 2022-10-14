@@ -2,9 +2,9 @@ package aplicacion;
 
 import datos.CargarDatos;
 import datos.CargarParametros;
-import logica.Calculo;
 import modelo.Relacion;
 import modelo.Usuario;
+import negocio.Calculo;
 import presentacion.Pantalla;
 
 import net.datastructures.TreeMap;

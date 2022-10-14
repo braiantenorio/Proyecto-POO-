@@ -2,7 +2,7 @@ package controlador;
 
 import gui.DesktopFrame;
 import gui.RedesSocialesCons;
-import logica.Calculo;
+import negocio.Calculo;
 
 public class Coordinador {
 	

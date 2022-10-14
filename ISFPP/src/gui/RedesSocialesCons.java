@@ -19,8 +19,8 @@ import controlador.Aplicacion;
 import controlador.Coordinador;
 import datos.CargarDatos;
 import datos.CargarParametros;
-import logica.Calculo;
 import modelo.Usuario;
+import negocio.Calculo;
 import modelo.Relacion;
 
 import presentacion.Pantalla;

@@ -1,4 +1,4 @@
-package logica;
+package negocio;
 
 import java.util.ArrayList;
 import java.util.Collections;

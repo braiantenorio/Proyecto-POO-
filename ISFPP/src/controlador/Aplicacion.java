@@ -8,9 +8,9 @@ import datos.CargarDatos;
 import datos.CargarParametros;
 import gui.DesktopFrame;
 import gui.RedesSocialesCons;
-import logica.Calculo;
 import modelo.Relacion;
 import modelo.Usuario;
+import negocio.Calculo;
 import net.datastructures.TreeMap;
 
 public class Aplicacion {
