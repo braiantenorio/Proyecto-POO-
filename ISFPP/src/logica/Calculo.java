@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import controlador.Coordinador;
 import modelo.Usuario;
 import modelo.Relacion;
 import net.datastructures.AdjacencyMapGraph;
@@ -20,12 +21,15 @@ import net.datastructures.Map;
 import net.datastructures.Pair;
 import net.datastructures.Position;
 
-public class Calculo<V> {
+public class Calculo {
+
+    private static Calculo calculo = null;
 
     private Graph<Usuario, Relacion> redSocial;
     private Graph<Usuario, Integer> rapido = null;
     private TreeMap<String, Vertex<Usuario>> vertices;
     private Map<Usuario, Vertex<Usuario>> res;
+    private Coordinador coordinador;
 
     public Calculo(TreeMap<String, Usuario> usuarios, List<Relacion> relaciones) {
         // crea el grafo
@@ -38,6 +42,17 @@ public class Calculo<V> {
             redSocial.insertEdge(vertices.get(relacion.getUsr1().getCodigo()),
                     vertices.get(relacion.getUsr2().getCodigo()), relacion);
 
+    }
+
+    public Calculo() {
+        // TODO Auto-generated constructor stub
+    }
+
+    public static Calculo getCalculo() {
+        if (calculo == null) {
+            calculo = new Calculo();
+        }
+        return calculo;
     }
 
     /**
@@ -131,6 +146,10 @@ public class Calculo<V> {
 
     }
 
+    /**
+     * @param usr
+     * @return List<Pair<Usuario, Integer>>
+     */
     public List<Pair<Usuario, Integer>> mostrarAmigos(String usr) {
         Vertex<Usuario> usuario = vertices.get(usr);
         List<Pair<Usuario, Integer>> amigos = new ArrayList<Pair<Usuario, Integer>>();
@@ -141,6 +160,9 @@ public class Calculo<V> {
         return amigos;
     }
 
+    /**
+     * @return Map<Integer, Pair<Usuario, Usuario>>
+     */
     public Map<Integer, Pair<Usuario, Usuario>> usuariosDensConectados() {
         Map<Integer, Pair<Usuario, Usuario>> interaccion = new TreeMap<>(Collections.reverseOrder());
         for (Edge<Relacion> relacion : redSocial.edges()) {
@@ -150,6 +172,10 @@ public class Calculo<V> {
         return interaccion;
     }
 
+    /**
+     * @param usr
+     * @return List<Usuario>
+     */
     public List<Usuario> sugerenciaAmistad(String usr) {
         Vertex<Usuario> usuario = vertices.get(usr);
         List<Usuario> sugerencias = new ArrayList<Usuario>();
@@ -162,5 +188,10 @@ public class Calculo<V> {
             }
         }
         return sugerencias;
+    }
+
+    public void setCoordinador(Coordinador coordinador) {
+        this.coordinador = coordinador;
+
     }
 }

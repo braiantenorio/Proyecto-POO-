@@ -1,4 +1,4 @@
-package test;
+/*package test;
 
 import datos.CargarDatos;
 import datos.CargarParametros;
@@ -46,3 +46,4 @@ public class Test {
 
 	}
 }
+*/

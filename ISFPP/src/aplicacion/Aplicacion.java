@@ -37,7 +37,7 @@ public class Aplicacion {
 			System.exit(-1);
 		}
 
-		Calculo<Usuario> c = new Calculo<Usuario>(usuarios, relaciones);
+		Calculo c = new Calculo(usuarios, relaciones);
 		boolean seguir = true;
 		while (seguir) {
 			int opcion = Pantalla.opcion();

@@ -1,4 +1,4 @@
-package test;
+/*package test;
 
 import datos.CargarDatos;
 import datos.CargarParametros;
@@ -68,7 +68,7 @@ public class testTenorio {
          * System.out.println(actEntry.getKey()+ " "+ actEntry.getValue().getFirst() +
          * " " + actEntry.getValue().getSecond());
          * }
-         */
+         
 
         // Pantalla.mostrarUsuarios(c.mostrarUsuarios());
 
@@ -76,4 +76,4 @@ public class testTenorio {
 
         // Pantalla.centralidad(c.centralidad());
     }
-}
+}*/
