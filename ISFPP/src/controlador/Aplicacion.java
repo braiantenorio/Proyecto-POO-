@@ -12,6 +12,7 @@ import modelo.Relacion;
 import modelo.Usuario;
 import negocio.Calculo;
 import net.datastructures.TreeMap;
+import gui.Constante;
 
 public class Aplicacion {
 

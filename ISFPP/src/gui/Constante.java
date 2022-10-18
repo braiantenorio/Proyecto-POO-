@@ -1,4 +1,4 @@
-package controlador;
+package gui;
 
 public class Constante {
 

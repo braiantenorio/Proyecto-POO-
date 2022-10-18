@@ -25,7 +25,7 @@ public class DesktopFrame extends JFrame {
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 		
-		JMenu mnNewMenu_1 = new JMenu("Redes Sociales");
+		JMenu mnNewMenu_1 = new JMenu("Red Social");
 		menuBar.add(mnNewMenu_1);
 		
 		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Salir");

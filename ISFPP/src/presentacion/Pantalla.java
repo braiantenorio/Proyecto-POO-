@@ -5,7 +5,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 
-import aplicacion.Constante;
+import gui.Constante;
 import modelo.Relacion;
 import modelo.Usuario;
 

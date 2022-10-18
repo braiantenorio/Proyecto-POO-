@@ -1,13 +1,14 @@
 package gui;
 
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import aplicacion.Constante;
+import gui.Constante;
 
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
@@ -34,6 +35,7 @@ import java.util.List;
 import java.util.TreeMap;
 import java.util.logging.Handler;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 
 public class RedesSocialesCons extends JDialog {
@@ -90,21 +92,34 @@ public class RedesSocialesCons extends JDialog {
 		@Override
 		public void actionPerformed(ActionEvent event) {
 
-			JTable tabla = new JTable();
-			// validar numero
 			Calculo c = new Calculo(Aplicacion.usuarios, Aplicacion.relaciones);
-
 			int opcion = Integer.parseInt(ltfInsertarNumero.getText());
 			switch (opcion) {
 				case (Constante.SALIR):
+
+					System.out.print(c.mostrarUsuarios().toArray(new String[c.mostrarUsuarios().size()])[1]);
+
 					Pantalla.despedida();
 					System.exit(-1);
 					break;
 				case (Constante.MOSTRAR_USUARIOS):
-				DefaultTableModel modelo = new DefaultTableModel(c.mostrarUsuarios().toArray(),0);
-					JTable asdf = new JTable(modelo);
-					JScrollPane spTable = new JScrollPane(asdf);
-					contentPane.add(spTable, BorderLayout.CENTER);
+					String[] nombres = new String[c.mostrarUsuarios().size()];
+					for (int i = 0; i < c.mostrarUsuarios().size(); i++) {
+						nombres[i] = c.mostrarUsuarios().get(i).toString();
+
+					}
+					JPanel panel = new JPanel(new BorderLayout());
+					JList<String> list = new JList<String>(nombres);
+					JScrollPane scrollPane = new JScrollPane();
+					scrollPane.setViewportView(list);
+					list.setLayoutOrientation(JList.VERTICAL_WRAP);
+					panel.add(scrollPane);
+					JFrame frame = new JFrame("DEMO");
+					frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+					frame.add(panel);
+					frame.setSize(500, 250);
+					frame.setLocationRelativeTo(null);
+					frame.setVisible(true);
 					break;
 				case (Constante.GRADOMEDIO):
 					Pantalla.gradoMedio(c.gradoMedio());
@@ -116,7 +131,8 @@ public class RedesSocialesCons extends JDialog {
 					String src = Pantalla.ingresarUsuario1();
 					String target = Pantalla.ingresarUsuario2();
 					try {
-						Pantalla.antiguedad(c.antiguedad(Aplicacion.usuarios.get(src), Aplicacion.usuarios.get(target)));
+						Pantalla.antiguedad(
+								c.antiguedad(Aplicacion.usuarios.get(src), Aplicacion.usuarios.get(target)));
 					} catch (NullPointerException e) {
 						Pantalla.error(Constante.ERROR_CODIGO_INVALIDO);
 					} catch (IllegalArgumentException e) {

@@ -12,6 +12,7 @@ import net.datastructures.TreeMap;
 import java.util.List;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import gui.Constante;
 
 
 public class Aplicacion {
