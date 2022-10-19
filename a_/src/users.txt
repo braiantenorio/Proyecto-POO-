@@ -1,0 +1,10 @@
+101;Marcos Zarate;2002-09-25;M;Buenos Aires;
+102;Carlos Diaz;1990-09-19;M;Puerto Madryn;
+103;Daniela Medina;2000-08-10;F;Trelew;
+104;Maria Soto;1980-12-09;F;Cordoba;
+105;Mariano Perez;2003-09-26;M;Puerto Madryn;
+106;Diego Correa;1999-03-18;M;Bahia Blanca;
+107;Carolina Ferrari;2001-09-30;F;Puerto Madryn;
+108;Diego Martinez;1999-01-22;M;Rawson;
+109;Pedro Lopez;2000-09-09;M;Comodoro Rivadavia;
+110;Monica Alvarez;2007-09-09;F;Buenos Aires;
