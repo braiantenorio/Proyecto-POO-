@@ -16,8 +16,8 @@ import gui.Constante;
 
 public class Aplicacion {
 
-	public static TreeMap<String, Usuario> usuarios = null;
-	public static List<Relacion> relaciones = null;
+	public static TreeMap<String, Usuario> usuarios;
+	public static List<Relacion> relaciones;
 
 	// Logica
 	private Calculo calculo;
