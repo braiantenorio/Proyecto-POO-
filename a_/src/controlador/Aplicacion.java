@@ -57,8 +57,6 @@ public class Aplicacion {
 	}
 	
 	private void cargarDatos() {
-
-
 		try {
 			CargarParametros.parametros();
 		} catch (IOException e) {
