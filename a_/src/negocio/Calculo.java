@@ -24,7 +24,7 @@ import net.datastructures.Position;
 
 public class Calculo {
 
-    private static Calculo calculo = null;
+    private static Calculo calculo;
 
     private Graph<Usuario, Relacion> redSocial;
     private Graph<Usuario, Integer> rapido = null;
