@@ -8,7 +8,6 @@ import javax.swing.JTextArea;
 import gui.Constante;
 import modelo.Relacion;
 import modelo.Usuario;
-
 import net.datastructures.Entry;
 
 public class Pantalla {

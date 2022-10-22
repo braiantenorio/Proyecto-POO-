@@ -6,13 +6,13 @@ import java.util.List;
 
 import datos.CargarDatos;
 import datos.CargarParametros;
+import gui.Constante;
 import gui.DesktopFrame;
 import gui.RedesSocialesCons;
 import modelo.Relacion;
 import modelo.Usuario;
 import negocio.Calculo;
 import net.datastructures.TreeMap;
-import gui.Constante;
 
 public class Aplicacion {
 

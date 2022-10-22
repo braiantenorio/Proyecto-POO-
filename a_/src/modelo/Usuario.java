@@ -8,16 +8,20 @@ public class Usuario {
 	private String codigo;
 	private String nombre;
 	private LocalDate fechadenac;
-	private String genero;
+	private Genero genero;
 	private String ciudadAct;
+	private NivelAcademico nivelAcademico;
 
-	public Usuario(String codigo, String nombre, LocalDate fechadenac, String genero, String ciudadAct) {
+	// constructor
+	public Usuario(String codigo, String nombre, LocalDate fechadenac, Genero genero, String ciudadAct,
+			NivelAcademico nivelAcademico) {
 		super();
 		this.codigo = codigo;
 		this.nombre = nombre;
 		this.fechadenac = fechadenac;
 		this.genero = genero;
 		this.ciudadAct = ciudadAct;
+		this.nivelAcademico = nivelAcademico;
 	}
 
 	public String getCodigo() {
@@ -36,15 +40,11 @@ public class Usuario {
 		this.nombre = nombre;
 	}
 
-	public Period getEdad() {
-		return Period.between(fechadenac, LocalDate.now());
-	}
-
-	public String getGenero() {
+	public Genero getGenero() {
 		return genero;
 	}
 
-	public void setGenero(String genero) {
+	public void setGenero(Genero genero) {
 		this.genero = genero;
 	}
 
@@ -54,6 +54,13 @@ public class Usuario {
 
 	public void setCiudadAct(String ciudadAct) {
 		this.ciudadAct = ciudadAct;
+	}
+
+	/**
+	 * @return el
+	 */
+	public Period getEdad() {
+		return Period.between(fechadenac, LocalDate.now());
 	}
 
 	@Override
@@ -83,7 +90,8 @@ public class Usuario {
 
 	@Override
 	public String toString() {
-		return "[" + codigo + " " + nombre + " " + getEdad().getYears() + " " + genero + " " + ciudadAct + "]";
+		return "Usuario [codigo=" + codigo + ", nombre=" + nombre + ", edad=" + getEdad().getYears() + ", genero=" + genero
+				+ ", ciudadAct=" + ciudadAct + ", nivelAcademico=" + nivelAcademico + "]";
 	}
 
 }

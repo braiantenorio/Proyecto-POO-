@@ -1,42 +1,23 @@
 package gui;
 
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableModel;
-
-import gui.Constante;
-
-import java.awt.event.ActionListener;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
 
 import controlador.Aplicacion;
 import controlador.Coordinador;
-import datos.CargarDatos;
-import datos.CargarParametros;
-import modelo.Usuario;
 import negocio.Calculo;
-import modelo.Relacion;
-
 import presentacion.Pantalla;
-
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.SwingConstants;
-import javax.swing.JTextField;
-
-import java.util.List;
-import java.util.TreeMap;
-import java.util.logging.Handler;
-
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
 
 public class RedesSocialesCons extends JDialog {
 
@@ -121,7 +102,7 @@ public class RedesSocialesCons extends JDialog {
 					frame.setLocationRelativeTo(null);
 					frame.setVisible(true);
 					break;
-				case (Constante.GRADOMEDIO):
+					case (Constante.GRADOMEDIO):
 					Pantalla.gradoMedio(c.gradoMedio());
 					break;
 				case (Constante.CENTRALIDAD):

@@ -8,6 +8,8 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
+import modelo.Genero;
+import modelo.NivelAcademico;
 import modelo.Relacion;
 import modelo.Usuario;
 import net.datastructures.TreeMap;
@@ -16,8 +18,8 @@ public class CargarDatos {
 	private static TreeMap<String, Usuario> usuarios;
 
 	/**
-	 * Carga las usuarios desde un archivo de texto y las guarda en un mapa donde la clave es la ID 
-	 * y el valor es el usuario
+	 * Carga las usuarios desde un archivo de texto y las guarda en un mapa donde la
+	 * clave es la ID y el valor es el usuario
 	 * 
 	 * @param fileName Nombre del archivo fuente de usuarios
 	 * @return TreeMap<String, Usuario> grafo no dirigido con
@@ -35,7 +37,9 @@ public class CargarDatos {
 
 		}
 		read.useDelimiter("\\s*;\\s*");
-		String codigo, nombre, genero, ciudadAct;
+		String codigo, nombre, ciudadAct;
+		String genero;
+		String nivelAcademico;
 		String fechaNac;
 		try {
 			while (read.hasNext()) {
@@ -44,11 +48,14 @@ public class CargarDatos {
 				fechaNac = read.next();
 				genero = read.next();
 				ciudadAct = read.next();
+				nivelAcademico = read.next();
 
-				usuarios.put(codigo, new Usuario(codigo, nombre, LocalDate.parse(fechaNac), genero, ciudadAct));
-			}
+				usuarios.put(codigo,
+						new Usuario(codigo, nombre, LocalDate.parse(fechaNac), Genero.valueOf(genero.toUpperCase()),
+								ciudadAct, NivelAcademico.valueOf(nivelAcademico.toUpperCase())));
+			} // toUpperCase reduce error con el formato
 		} catch (InputMismatchException e) {
-			System.out.printf("Error archivo %s con formato inv�lido.", fileName);
+			System.out.printf("Error archivo %s con formato invalido.", fileName);
 		} finally {
 			read.close();
 		}
@@ -63,8 +70,7 @@ public class CargarDatos {
 	 * @return List<Relacion> Lista con todas las relaciones
 	 * @throws FileNotFoundException si no se encuentra el archivo
 	 */
-	public static List<Relacion> crearRelaciones(String fileName)
-			throws FileNotFoundException {
+	public static List<Relacion> crearRelaciones(String fileName) throws FileNotFoundException {
 		Scanner read = null;
 		List<Relacion> relaciones = new ArrayList<Relacion>();
 		try {
@@ -87,7 +93,7 @@ public class CargarDatos {
 				relaciones.add(0, new Relacion(usr1, usr2, tInterDiaria, likes, LocalDate.parse(fechaAmistad)));
 			}
 		} catch (InputMismatchException e) {
-			System.out.printf("Error archivo %s con formato inv�lido.", fileName);
+			System.out.printf("Error archivo %s con formato invalido.", fileName);
 		} finally {
 			read.close();
 		}
