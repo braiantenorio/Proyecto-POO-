@@ -41,6 +41,7 @@ public class CargarDatos {
 		String genero;
 		String nivelAcademico;
 		String fechaNac;
+		Usuario usuario;
 		try {
 			while (read.hasNext()) {
 				codigo = read.next();
@@ -49,10 +50,11 @@ public class CargarDatos {
 				genero = read.next();
 				ciudadAct = read.next();
 				nivelAcademico = read.next();
-
-				usuarios.put(codigo,
-						new Usuario(codigo, nombre, LocalDate.parse(fechaNac), Genero.valueOf(genero.toUpperCase()),
-								ciudadAct, NivelAcademico.valueOf(nivelAcademico.toUpperCase())));
+				usuario = new Usuario(codigo, nombre, LocalDate.parse(fechaNac), Genero.valueOf(genero.toUpperCase()),
+						ciudadAct, NivelAcademico.valueOf(nivelAcademico.toUpperCase()));
+				if (usuarios.get(codigo) != null)
+					throw new UsuarioRepetidoException ("usuario repetido:"+codigo);
+				usuarios.put(codigo, usuario);
 			} // toUpperCase reduce error con el formato
 		} catch (InputMismatchException e) {
 			System.out.printf("Error archivo %s con formato invalido.", fileName);
@@ -83,6 +85,7 @@ public class CargarDatos {
 		Usuario usr1, usr2;
 		int likes, tInterDiaria;
 		String fechaAmistad;
+		Relacion relacion;
 		try {
 			while (read.hasNext()) {
 				usr1 = usuarios.get(read.next());
@@ -90,7 +93,10 @@ public class CargarDatos {
 				tInterDiaria = read.nextInt();
 				likes = read.nextInt();
 				fechaAmistad = read.next();
-				relaciones.add(0, new Relacion(usr1, usr2, tInterDiaria, likes, LocalDate.parse(fechaAmistad)));
+				relacion = new Relacion(usr1, usr2, tInterDiaria, likes, LocalDate.parse(fechaAmistad));
+				if (relaciones.contains(relacion))
+					throw new RelacionRepetidaException("relacion:"+usr1.getCodigo()+"-"+usr2.getCodigo());
+				relaciones.add(relacion);
 			}
 		} catch (InputMismatchException e) {
 			System.out.printf("Error archivo %s con formato invalido.", fileName);

@@ -48,7 +48,6 @@ public class Calculo {
 	}
 
 	public Calculo() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public static Calculo getCalculo() {
@@ -141,11 +140,20 @@ public class Calculo {
 	 * @return List<Usuario> con todos los usuarios
 	 */
 	public List<Usuario> mostrarUsuarios() {
-		List<Usuario> answer = new ArrayList<Usuario>();
+		List<Usuario> usuarios = new ArrayList<Usuario>();
 		for (Vertex<Usuario> usr : redSocial.vertices())
-			answer.add(usr.getElement());
-		return answer;
+			usuarios.add(usr.getElement());
+		return usuarios;
 
+	}
+
+	//
+	public List<Relacion> mostrarRelaciones() {
+		List<Relacion> relaciones = new ArrayList<>();
+		for (Edge<Relacion> relacion : redSocial.edges()) {
+			relaciones.add(relacion.getElement());
+		}
+		return relaciones;
 	}
 
 	/**
@@ -155,6 +163,7 @@ public class Calculo {
 	public List<Pair<Usuario, Integer>> mostrarAmigos(String usr) {
 		Vertex<Usuario> usuario = vertices.get(usr);
 		List<Pair<Usuario, Integer>> amigos = new ArrayList<Pair<Usuario, Integer>>();
+
 		for (Edge<Relacion> relacionActual : redSocial.outgoingEdges(usuario)) {
 			amigos.add(new Pair<Usuario, Integer>(redSocial.opposite(usuario, relacionActual).getElement(),
 					relacionActual.getElement().gettSiendoAmigos()));
@@ -163,6 +172,8 @@ public class Calculo {
 	}
 
 	/**
+	 * Ver para cada vértice la suma de la interacción.
+	 * 
 	 * @return Map<Integer, Pair<Usuario, Usuario>>
 	 */
 	public Map<Integer, Pair<Usuario, Usuario>> usuariosDensConectados() {
@@ -183,7 +194,7 @@ public class Calculo {
 	 * @return List<Usuario>
 	 */
 	public List<Usuario> sugerenciaAmistad(String usr) {
-		
+
 		Vertex<Usuario> usuario = vertices.get(usr);
 		List<Usuario> sugerencias = new ArrayList<Usuario>();
 		for (Edge<Relacion> relacionActual : redSocial.outgoingEdges(usuario)) {
@@ -207,9 +218,9 @@ public class Calculo {
 	 */
 	public Usuario busqueda(String str) {
 		return vertices.get(str).getElement();
-		
+
 	}
-	
+
 	public void setCoordinador(Coordinador coordinador) {
 		this.coordinador = coordinador;
 	}
