@@ -1,7 +1,7 @@
 package modelo;
 
 import java.time.LocalDate;
-import java.time.Period;
+import java.time.temporal.ChronoUnit;
 
 public class Relacion {
 	private Usuario usr1;
@@ -51,8 +51,8 @@ public class Relacion {
 		this.likes = likes;
 	}
 
-	public int gettSiendoAmigos() {
-		return Period.between(fecha, LocalDate.now()).getDays();
+	public int gettSiendoAmigos() {	
+		return (int) ChronoUnit.DAYS.between(fecha, LocalDate.now());
 	}
 
 	@Override

@@ -57,7 +57,9 @@ public class Usuario {
 	}
 
 	/**
-	 * @return el
+	 * Retorna la edad del Usuario con los anios meses y dias.
+	 * 
+	 * @return Period
 	 */
 	public Period getEdad() {
 		return Period.between(fechadenac, LocalDate.now());
@@ -90,8 +92,8 @@ public class Usuario {
 
 	@Override
 	public String toString() {
-		return "Usuario [codigo=" + codigo + ", nombre=" + nombre + ", edad=" + getEdad().getYears() + ", genero=" + genero
-				+ ", ciudadAct=" + ciudadAct + ", nivelAcademico=" + nivelAcademico + "]";
+		return "Usuario [codigo=" + codigo + ", nombre=" + nombre + ", edad=" + getEdad().getYears() + ", genero="
+				+ genero + ", ciudadAct=" + ciudadAct + ", nivelAcademico=" + nivelAcademico + "]";
 	}
 
 }

@@ -7,10 +7,11 @@ import java.util.List;
 import datos.CargarDatos;
 import datos.RelacionRepetidaException;
 import datos.UsuarioRepetidoException;
-import modelo.Genero;
 import modelo.Relacion;
 import modelo.Usuario;
 import negocio.Calculo;
+import net.datastructures.Entry;
+import net.datastructures.Map;
 import net.datastructures.TreeMap;
 
 // test visual para depuracion
@@ -48,22 +49,46 @@ public class testCalculo {
 		for (Usuario usuario : listUsr) {
 			System.out.println("\t:" + i++ + usuario);
 		}
-		System.out.println(listUsr + "\n\n");
+		// System.out.println(listUsr + "\n\n");
 
-		Usuario usr = calculo.busqueda("102");
+		// Usuario usr = calculo.busqueda("102");
 
 		// Period
-		System.out.println("anios:" + usr.getEdad().getYears() + ", meses:" + usr.getEdad().getMonths() + ", dias:"
-				+ usr.getEdad().getDays());
+		// System.out.println("anios:" + usr.getEdad().getYears() + ", meses:" +
+		// usr.getEdad().getMonths() + ", dias:"
+		// + usr.getEdad().getDays());
 
 		// ver todos los valores posibles
-		for (Genero g : Genero.values()) {
-			System.out.println(g);
-		}
+		// for (Genero g : Genero.values()) {
+		// System.out.println(g);
+		// }
 
 		// enum genero
-		System.out.println(usr.getGenero());
+		// System.out.println(usr.getGenero());
 
-		System.out.println(relaciones);
+		// System.out.println(relaciones);
+
+		//
+		System.out.println("\n"+"centralidad:");
+		List<Entry<Usuario, Integer>> centralidad = calculo.centralidad();
+		for(Entry<Usuario, Integer> entry:centralidad) 
+			System.out.println(entry.getKey()+":"+entry.getValue());
+		
+		System.out.println("\n"+"usuarios conectados:");
+		List<Entry<Usuario, Integer>> usrConectados = calculo.usuariosDensaConectados();
+		System.out.println(usrConectados);
+		for (Entry<Usuario,Integer> entry : usrConectados) {
+			System.out.println(entry.getKey()+":"+entry.getValue());
+			
+		}
+		System.out.println(usrConectados.size());
+		
+		System.out.println("\n"+"amigos:");
+		Map<Usuario, Integer> amigos = calculo.mostrarAmigosM("101");
+		System.out.println(amigos);
+		for (Entry<Usuario, Integer> amigo : amigos.entrySet()) {
+			System.out.println(amigo.getKey()+"-"+amigo.getValue());
+		}
+
 	}
 }
