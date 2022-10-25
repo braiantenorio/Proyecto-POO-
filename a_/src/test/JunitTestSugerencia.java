@@ -1,5 +1,6 @@
 package test;
 
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.FileNotFoundException;
@@ -57,23 +58,16 @@ public class JunitTestSugerencia {
 	public void testSugerencia() {
 		Usuario usuario = calculo.busqueda("101");
 
-		listUsr = calculo.sugerenciaAmistad(usuario.getCodigo());//sugerencias
+		listUsr = calculo.sugerenciaAmistad(usuario.getCodigo());// sugerencias
+		// borrar metodo
 		listAux = calculo.mostrarAmigos(usuario.getCodigo()); // amigos
 
 		Map<Usuario, Integer> amigos = calculo.mostrarAmigosM(usuario.getCodigo());
-		
-		System.out.println("sugerencias:"+listUsr.size());
-		System.out.println("amigos:"+amigos.size());
-		
-		for (Usuario usr : listUsr){// sugerencias
-			//assertNull(amigos.get(usr));
-			//System.out.println(listAux.contains(usr));
-			System.out.println(amigos.get(usr));
-		
+
+		for (Usuario usr : listUsr) {// sugerencias
+			assertNull(amigos.get(usr));
+
 		}
-		// for (Pair<Usuario,Integer> us :
-		// calculo.mostrarAmigos(usr.getCodigo()))//amigos de sugerencia
-		// ;
 	}
 
 	@Test(expected = UsuarioNoValidoException.class)
