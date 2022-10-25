@@ -107,6 +107,13 @@ public class Calculo {
 	 * @return List<Relacion> Lista con el camino mas corto
 	 */
 	public List<Relacion> antiguedad(Usuario src, Usuario target) {
+		if (vertices.get(src.getCodigo()) == null)
+		throw new UsuarioNoValidoException("Codigo no valido:" + src.getCodigo());
+		
+		if (vertices.get(target.getCodigo()) == null)
+			throw new UsuarioNoValidoException("Codigo no valido:" +target.getCodigo());
+			
+		
 		if (rapido == null) {
 			rapido = new AdjacencyMapGraph<>(false);
 			res = new ProbeHashMap<>();
@@ -171,6 +178,9 @@ public class Calculo {
 	 */
 	public List<Pair<Usuario, Integer>> mostrarAmigos(String usr) {
 		Vertex<Usuario> usuario = vertices.get(usr);
+		if (usuario == null)
+			throw new UsuarioNoValidoException("Codigo no valido:" + usr);
+		
 		List<Pair<Usuario, Integer>> amigos = new ArrayList<Pair<Usuario, Integer>>();
 
 		for (Edge<Relacion> relacionActual : redSocial.outgoingEdges(usuario)) {
