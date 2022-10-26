@@ -88,7 +88,7 @@ public class Relacion {
 
 	@Override
 	public String toString() {
-		return "Tiempo de interaccion diaria: " + tInterDiaria + " Cantidad de likes:" + likes;
+		return usr1.getCodigo()+"-"+usr2.getCodigo()+"Tiempo de interaccion diaria: " + tInterDiaria + " Cantidad de likes:" + likes;
 	}
 
 }

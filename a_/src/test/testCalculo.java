@@ -45,14 +45,14 @@ public class testCalculo {
 		int i = 0;
 
 		// modificacion metodo sugerenciaAmistad
-		System.out.println("amigos de " + calculo.busqueda("101"));
+		System.out.println("amigos de " + calculo.busquedaUsuario("101"));
 		for (Usuario usuario : listUsr) {
 			System.out.println("\t:" + i++ + usuario);
 		}
 		// System.out.println(listUsr + "\n\n");
 
-		// Usuario usr = calculo.busqueda("102");
-
+		Usuario usr1 = calculo.busquedaUsuario("101");
+		Usuario usr2 = calculo.busquedaUsuario("107");
 		// Period
 		// System.out.println("anios:" + usr.getEdad().getYears() + ", meses:" +
 		// usr.getEdad().getMonths() + ", dias:"
@@ -69,6 +69,8 @@ public class testCalculo {
 		// System.out.println(relaciones);
 
 		//
+		System.out.println(calculo.mostrarRelaciones());
+		
 		System.out.println("\n"+"centralidad:");
 		List<Entry<Usuario, Integer>> centralidad = calculo.centralidad();
 		for(Entry<Usuario, Integer> entry:centralidad) 
@@ -84,11 +86,15 @@ public class testCalculo {
 		System.out.println(usrConectados.size());
 		
 		System.out.println("\n"+"amigos:");
-		Map<Usuario, Integer> amigos = calculo.mostrarAmigosM("101");
+		Map<Usuario, Integer> amigos = calculo.mapaAmigos("101");
 		System.out.println(amigos);
 		for (Entry<Usuario, Integer> amigo : amigos.entrySet()) {
 			System.out.println(amigo.getKey()+"-"+amigo.getValue());
 		}
-
+		calculo.antiguedad(usr1,usr2 );
+		
+		System.out.println(calculo.sugerenciaAmistad("101"));
+		
+		System.exit(0);
 	}
 }

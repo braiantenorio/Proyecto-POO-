@@ -16,7 +16,6 @@ import modelo.Usuario;
 import negocio.Calculo;
 import negocio.UsuarioNoValidoException;
 import net.datastructures.Map;
-import net.datastructures.Pair;
 import net.datastructures.TreeMap;
 
 public class JunitTestSugerencia {
@@ -25,7 +24,6 @@ public class JunitTestSugerencia {
 	List<Relacion> relaciones = new ArrayList<>();
 	Calculo calculo;
 	List<Usuario> listUsr;
-	List<Pair<Usuario, Integer>> listAux;
 	List<Relacion> listRel;
 
 	@Before
@@ -47,7 +45,7 @@ public class JunitTestSugerencia {
 	@Test
 	public void testDistinto() {
 		// que no sugiera al mismo usuario
-		Usuario usuario = calculo.busqueda("101");
+		Usuario usuario = calculo.busquedaUsuario("101");
 
 		listUsr = calculo.sugerenciaAmistad(usuario.getCodigo());
 		for (Usuario usr : listUsr)
@@ -56,19 +54,18 @@ public class JunitTestSugerencia {
 
 	@Test
 	public void testSugerencia() {
-		Usuario usuario = calculo.busqueda("101");
-
+		// no sugerir amigos compartidos
+		Usuario usuario = calculo.busquedaUsuario("101");
 		listUsr = calculo.sugerenciaAmistad(usuario.getCodigo());// sugerencias
-		// borrar metodo
-		listAux = calculo.mostrarAmigos(usuario.getCodigo()); // amigos
 
-		Map<Usuario, Integer> amigos = calculo.mostrarAmigosM(usuario.getCodigo());
+		Map<Usuario, Integer> amigos = calculo.mapaAmigos(usuario.getCodigo());// amigos
 
 		for (Usuario usr : listUsr) {// sugerencias
 			assertNull(amigos.get(usr));
-
 		}
 	}
+	
+	
 
 	@Test(expected = UsuarioNoValidoException.class)
 	public void testExceptionNulo() {

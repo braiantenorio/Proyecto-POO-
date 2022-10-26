@@ -107,13 +107,13 @@ public class Calculo {
 	 * @return List<Relacion> Lista con el camino mas corto
 	 */
 	public List<Relacion> antiguedad(Usuario src, Usuario target) {
+		if (src == null || target == null)
+			throw new UsuarioNoValidoException("Codigo no valido:" + null);
 		if (vertices.get(src.getCodigo()) == null)
-		throw new UsuarioNoValidoException("Codigo no valido:" + src.getCodigo());
-		
+			throw new UsuarioNoValidoException("Codigo no valido:" + src.getCodigo());
 		if (vertices.get(target.getCodigo()) == null)
-			throw new UsuarioNoValidoException("Codigo no valido:" +target.getCodigo());
-			
-		
+			throw new UsuarioNoValidoException("Codigo no valido:" + target.getCodigo());
+
 		if (rapido == null) {
 			rapido = new AdjacencyMapGraph<>(false);
 			res = new ProbeHashMap<>();
@@ -173,24 +173,13 @@ public class Calculo {
 	}
 
 	/**
-	 * @param usr
-	 * @return List<Pair<Usuario, Integer>>
+	 * Mostrar los amigos de un usuario determinado.
+	 * 
+	 * @param usr El codigo del usuario
+	 * @throws UsuarioNoValidoException
+	 * @return un mapa con los amigos del usuario
 	 */
-	public List<Pair<Usuario, Integer>> mostrarAmigos(String usr) {
-		Vertex<Usuario> usuario = vertices.get(usr);
-		if (usuario == null)
-			throw new UsuarioNoValidoException("Codigo no valido:" + usr);
-		
-		List<Pair<Usuario, Integer>> amigos = new ArrayList<Pair<Usuario, Integer>>();
-
-		for (Edge<Relacion> relacionActual : redSocial.outgoingEdges(usuario)) {
-			amigos.add(new Pair<Usuario, Integer>(redSocial.opposite(usuario, relacionActual).getElement(),
-					relacionActual.getElement().gettSiendoAmigos()));
-		}
-		return amigos;
-	}
-
-	public Map<Usuario, Integer> mostrarAmigosM(String usr) {
+	public Map<Usuario, Integer> mapaAmigos(String usr) {
 		// el usuario
 		Vertex<Usuario> usuario = vertices.get(usr);
 		Usuario amigo = null;
@@ -209,42 +198,31 @@ public class Calculo {
 	}
 
 	/**
-	 * 
-	 * @return Map<Integer, Pair<Usuario, Usuario>>
-	 */
-	@Deprecated
-	public Map<Integer, Pair<Usuario, Usuario>> usuariosDensConectados() {
-		Map<Integer, Pair<Usuario, Usuario>> interaccion = new TreeMap<>(Collections.reverseOrder());
-		for (Edge<Relacion> relacion : redSocial.edges()) {
-			Integer i = relacion.getElement().gettInterDiaria();
-			if (interaccion.get(i) == null)
-				interaccion.put(i,
-						new Pair<Usuario, Usuario>(relacion.getElement().getUsr1(), relacion.getElement().getUsr2()));
-
-		}
-		return interaccion;
-	}
-
-	/**
-	 * Ver para cada vértice la suma de la interacción.
+	 * Ver para cada vértice la suma de la interacción. Los usuarios que están más
+	 * densamente conectados son acuerdo a la interacción diaria que tienen
 	 * 
 	 * @return Lista con Usuario y Interaccion
 	 */
 	public List<Entry<Usuario, Integer>> usuariosDensaConectados() {
 		Map<Usuario, Integer> interacciones = new ProbeHashMap<>();
-		int interaccion = 0;
+		int interaccion;
 
+		// obtener los usuarios con sus interacciones
 		for (Usuario usuario : mostrarUsuarios()) {
-			for (Pair<Usuario, Integer> amigo : mostrarAmigos(usuario.getCodigo())) {
-				interaccion += amigo.getSecond();
+			interaccion = 0;
+			for (Relacion relacion : mostrarRelaciones()) {
+				if (usuario.equals(relacion.getUsr1()) || usuario.equals(relacion.getUsr2()))
+					interaccion += relacion.gettInterDiaria();
 			}
 			interacciones.put(usuario, interaccion);
 
 		}
-		List<Entry<Usuario, Integer>> lista = new ArrayList<Entry<Usuario, Integer>>();
-		for (Entry<Usuario, Integer> e : interacciones.entrySet())
-			lista.add(e);
 
+		List<Entry<Usuario, Integer>> lista = new ArrayList<Entry<Usuario, Integer>>();
+		for (Entry<Usuario, Integer> inter : interacciones.entrySet())
+			lista.add(inter);
+
+		// orden
 		Collections.sort(lista, new Comparator<Entry<Usuario, Integer>>() {
 			@Override
 			public int compare(Entry<Usuario, Integer> arg0, Entry<Usuario, Integer> arg1) {
@@ -269,22 +247,44 @@ public class Calculo {
 	public List<Usuario> sugerenciaAmistad(String usr) {
 		List<Usuario> sugerencias = new ArrayList<Usuario>();
 		if (usr == null)
-			throw new UsuarioNoValidoException("Codigo no valido:" + usr);
-
+			throw new UsuarioNoValidoException();
 		Vertex<Usuario> usuario = vertices.get(usr);
-		if (usuario != null)
-			for (Edge<Relacion> relacionActual : redSocial.outgoingEdges(usuario)) {
-				Vertex<Usuario> vUsr = redSocial.opposite(usuario, relacionActual);
-				for (Edge<Relacion> relacionActual2 : redSocial.outgoingEdges(vUsr)) {
-					Usuario nuevo = redSocial.opposite(vUsr, relacionActual2).getElement();
-
-					if (!sugerencias.contains(nuevo) && !nuevo.equals(usuario.getElement())
-							&& mostrarAmigosM(usr).get(nuevo) == null)
-						sugerencias.add(nuevo);
-				}
-			}
-		else
+		if (usuario == null)
 			throw new UsuarioNoValidoException("Codigo no valido:" + usr);
+
+		Relacion relacion;
+		double param;
+
+//		for (Edge<Relacion> relacionActual : redSocial.outgoingEdges(usuario)) {
+//			Vertex<Usuario> amigo = redSocial.opposite(usuario, relacionActual);
+//			relacion = busquedaRelacion(usuario.getElement(), amigo.getElement());
+//			param = relacion.getLikes() * .40 + relacion.gettInterDiaria() * 1.5;
+//			if (param > 45)
+//				for (Edge<Relacion> relacionActual2 : redSocial.outgoingEdges(amigo)) {
+//					Usuario nuevo = redSocial.opposite(amigo, relacionActual2).getElement();
+//					if (!sugerencias.contains(nuevo) && !nuevo.equals(usuario.getElement())
+//							&& mapaAmigos(usr).get(nuevo) == null)
+//						sugerencias.add(nuevo);
+//				}
+//		}
+		
+		for (Entry<Usuario, Integer> amigo : mapaAmigos(usr).entrySet()) {
+			relacion = busquedaRelacion(usuario.getElement(), amigo.getKey());
+			param = relacion.getLikes() * .40 + relacion.gettInterDiaria() * 1.5;
+			if (param > 45) // si el amigo cumple con los criterios
+			for (Entry<Usuario, Integer> amiAmi : mapaAmigos(amigo.getKey().getCodigo()).entrySet()) {
+				Usuario nuevo = amiAmi.getKey();
+				relacion = busquedaRelacion(amiAmi.getKey(), amigo.getKey());
+				param = relacion.getLikes() * .40 + relacion.gettInterDiaria() * 1.5;
+				if (param > 75)// si el amigo de amigo cumple con los criterios
+				if (!sugerencias.contains(nuevo) && !nuevo.equals(usuario.getElement())
+						&& mapaAmigos(usr).get(nuevo) == null)
+					sugerencias.add(nuevo);
+				
+			}
+			
+		}
+
 		return sugerencias;
 	}
 
@@ -292,11 +292,30 @@ public class Calculo {
 	 * Busca un vertice en base a un codigo de usuario ingresado. El usuario debe
 	 * estar en la redSocial.
 	 * 
-	 * @param str el codigo del usuario que se buscara
+	 * @param cod el codigo del usuario que se buscara
 	 * @return el usuario, null en caso contrario
 	 */
-	public Usuario busqueda(String str) {
-		return vertices.get(str).getElement();
+	public Usuario busquedaUsuario(String cod) {
+		if (cod == null)
+			throw new UsuarioNoValidoException();
+		return vertices.get(cod).getElement();
+	}
+
+	/**
+	 * @return la interaccion de una relacion
+	 */
+	public Relacion busquedaRelacion(Usuario usr1, Usuario usr2) {
+		Relacion relacion = new Relacion(usr1, usr2, 0, 0, null);
+		if (usr1 == null || usr2 == null)
+			throw new UsuarioNoValidoException();
+		if (vertices.get(usr1.getCodigo()) == null || vertices.get(usr2.getCodigo()) == null)
+			throw new UsuarioNoValidoException();
+
+		for (Relacion relac : mostrarRelaciones()) {
+			if (relac.equals(relacion))
+				return relac;
+		}
+		throw new RelacionNoValidaException();
 	}
 
 	public void setCoordinador(Coordinador coordinador) {
