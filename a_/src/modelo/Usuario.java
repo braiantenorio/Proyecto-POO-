@@ -92,8 +92,8 @@ public class Usuario {
 
 	@Override
 	public String toString() {
-		return "Usuario [codigo=" + codigo + ", nombre=" + nombre + ", edad=" + getEdad().getYears() + ", genero="
-				+ genero + ", ciudadAct=" + ciudadAct + ", nivelAcademico=" + nivelAcademico + "]";
+		return "codigo=" + codigo + ", nombre=" + nombre + ", edad=" + getEdad().getYears() + ", genero="
+				+ genero + ", ciudadAct=" + ciudadAct + ", nivelAcademico=" + nivelAcademico ;
 	}
 
 }

@@ -38,7 +38,8 @@ public class JunitTestSugerencia {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		calculo = new Calculo(usuarios, relaciones);
+		calculo = new Calculo();
+		calculo.calculoDatos(usuarios, relaciones);
 
 	}
 

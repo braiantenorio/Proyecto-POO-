@@ -38,7 +38,11 @@ public class testCalculo {
 			e.printStackTrace();
 		}
 
-		calculo = new Calculo(usuarios, relaciones);
+		calculo = new Calculo();
+		calculo.calculoDatos(usuarios, relaciones);
+		
+		
+		
 		List<Usuario> listUsr = new ArrayList<>();
 
 		listUsr = calculo.sugerenciaAmistad("101");

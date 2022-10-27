@@ -4,11 +4,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import datos.CargarDatos;
 import datos.CargarParametros;
-import gui.Constante;
 import gui.DesktopFrame;
-import gui.RedesSocialesCons;
 import modelo.Relacion;
 import modelo.Usuario;
 import negocio.Calculo;
@@ -16,51 +16,49 @@ import net.datastructures.TreeMap;
 
 public class Aplicacion {
 
-	public static TreeMap<String, Usuario> usuarios;
-	public static List<Relacion> relaciones;
+	public static TreeMap<String, Usuario> usuarios = null;
+	public static List<Relacion> relaciones = null;
 
-	// Logica
+	// LOGICA
 	private Calculo calculo;
 	// VISTA
 	private DesktopFrame desktopFrame;
-	private RedesSocialesCons redesSocialesform;
 	// CONTROLADOR
 	private Coordinador coordinador;
 
 	public static void main(String[] args) {
 
 		Aplicacion miAplicacion = new Aplicacion();
-
 		miAplicacion.iniciar();
 
 	}
 
 	private void iniciar() {
 		/* Se instancian las clases */
-		calculo = Calculo.getCalculo();
+		calculo = new Calculo();
 		desktopFrame = new DesktopFrame();
-		redesSocialesform = new RedesSocialesCons();
 		coordinador = new Coordinador();
 
 		/* Se establecen las relaciones entre clases */
 		calculo.setCoordinador(coordinador);
 		desktopFrame.setCoordinador(coordinador);
-		redesSocialesform.setCoordinador(coordinador);
+
 		/* Se establecen relaciones con la clase coordinador */
 		coordinador.setCalculo(calculo);
 		coordinador.setDesktopFrame(desktopFrame);
-		coordinador.setRedesSocialesForm(redesSocialesform);
-		//cargarEmpleados();
+
 		cargarDatos();
+		calculo.calculoDatos(usuarios, relaciones);
 		desktopFrame.setVisible(true);
 
 	}
-	
+
 	private void cargarDatos() {
+
 		try {
 			CargarParametros.parametros();
 		} catch (IOException e) {
-			System.err.print(Constante.ERROR_PARAMETROS);
+			JOptionPane.showMessageDialog(null, e);
 			System.exit(-1);
 		}
 
@@ -68,7 +66,7 @@ public class Aplicacion {
 			usuarios = CargarDatos.cargarUsuarios(CargarParametros.getArchivoUsuario());
 			relaciones = CargarDatos.crearRelaciones(CargarParametros.getArchivoRelaciones());
 		} catch (FileNotFoundException e) {
-			System.err.print(Constante.ERROR_ARCHIVO);
+			JOptionPane.showMessageDialog(null, e);
 			System.exit(-1);
 		}
 	}

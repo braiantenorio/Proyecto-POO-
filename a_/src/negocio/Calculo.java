@@ -14,7 +14,6 @@ import net.datastructures.Entry;
 import net.datastructures.Graph;
 import net.datastructures.GraphAlgorithms;
 import net.datastructures.Map;
-import net.datastructures.Pair;
 import net.datastructures.Position;
 import net.datastructures.PositionalList;
 import net.datastructures.ProbeHashMap;
@@ -31,8 +30,18 @@ public class Calculo {
 	private Map<Usuario, Vertex<Usuario>> res;
 	private Coordinador coordinador;
 
-	// constructor
-	public Calculo(TreeMap<String, Usuario> usuarios, List<Relacion> relaciones) {
+	// constructor vacio
+	public Calculo() {
+	}
+
+	public static Calculo getCalculo() {
+		if (calculo == null) {
+			calculo = new Calculo();
+		}
+		return calculo;
+	}
+
+	public void calculoDatos(TreeMap<String, Usuario> usuarios, List<Relacion> relaciones) {
 		// crea el grafo
 		redSocial = new AdjacencyMapGraph<>(false);
 		vertices = new TreeMap<String, Vertex<Usuario>>();
@@ -43,17 +52,6 @@ public class Calculo {
 			redSocial.insertEdge(vertices.get(relacion.getUsr1().getCodigo()),
 					vertices.get(relacion.getUsr2().getCodigo()), relacion);
 
-	}
-
-	// constructor vacio
-	public Calculo() {
-	}
-
-	public static Calculo getCalculo() {
-		if (calculo == null) {
-			calculo = new Calculo();
-		}
-		return calculo;
 	}
 
 	/**
@@ -108,11 +106,11 @@ public class Calculo {
 	 */
 	public List<Relacion> antiguedad(Usuario src, Usuario target) {
 		if (src == null || target == null)
-			throw new UsuarioNoValidoException("Codigo no valido:" + null);
-		if (vertices.get(src.getCodigo()) == null)
-			throw new UsuarioNoValidoException("Codigo no valido:" + src.getCodigo());
-		if (vertices.get(target.getCodigo()) == null)
-			throw new UsuarioNoValidoException("Codigo no valido:" + target.getCodigo());
+			throw new UsuarioNoValidoException("Codigo no valido");
+		if (vertices.get(src.getCodigo()) == null || vertices.get(target.getCodigo()) == null)
+			throw new UsuarioNoValidoException("Codigo no valido");
+		if (src.equals(target))
+			throw new RelacionNoValidaException("Mismo usuario");
 
 		if (rapido == null) {
 			rapido = new AdjacencyMapGraph<>(false);
@@ -253,38 +251,19 @@ public class Calculo {
 			throw new UsuarioNoValidoException("Codigo no valido:" + usr);
 
 		Relacion relacion;
-		double param;
 
-//		for (Edge<Relacion> relacionActual : redSocial.outgoingEdges(usuario)) {
-//			Vertex<Usuario> amigo = redSocial.opposite(usuario, relacionActual);
-//			relacion = busquedaRelacion(usuario.getElement(), amigo.getElement());
-//			param = relacion.getLikes() * .40 + relacion.gettInterDiaria() * 1.5;
-//			if (param > 45)
-//				for (Edge<Relacion> relacionActual2 : redSocial.outgoingEdges(amigo)) {
-//					Usuario nuevo = redSocial.opposite(amigo, relacionActual2).getElement();
-//					if (!sugerencias.contains(nuevo) && !nuevo.equals(usuario.getElement())
-//							&& mapaAmigos(usr).get(nuevo) == null)
-//						sugerencias.add(nuevo);
-//				}
-//		}
-		
 		for (Entry<Usuario, Integer> amigo : mapaAmigos(usr).entrySet()) {
 			relacion = busquedaRelacion(usuario.getElement(), amigo.getKey());
-			param = relacion.getLikes() * .40 + relacion.gettInterDiaria() * 1.5;
-			if (param > 45) // si el amigo cumple con los criterios
-			for (Entry<Usuario, Integer> amiAmi : mapaAmigos(amigo.getKey().getCodigo()).entrySet()) {
-				Usuario nuevo = amiAmi.getKey();
-				relacion = busquedaRelacion(amiAmi.getKey(), amigo.getKey());
-				param = relacion.getLikes() * .40 + relacion.gettInterDiaria() * 1.5;
-				if (param > 75)// si el amigo de amigo cumple con los criterios
-				if (!sugerencias.contains(nuevo) && !nuevo.equals(usuario.getElement())
-						&& mapaAmigos(usr).get(nuevo) == null)
-					sugerencias.add(nuevo);
-				
-			}
-			
+			if (buenaRelacion(relacion, 45)) // si el amigo cumple con los criterios
+				for (Entry<Usuario, Integer> amiAmi : mapaAmigos(amigo.getKey().getCodigo()).entrySet()) {
+					Usuario nuevo = amiAmi.getKey();
+					relacion = busquedaRelacion(amiAmi.getKey(), amigo.getKey());
+					// si el amigo de amigo cumple con los criterios
+					if (buenaRelacion(relacion, 75) && !sugerencias.contains(nuevo)
+							&& !nuevo.equals(usuario.getElement()) && mapaAmigos(usr).get(nuevo) == null)
+						sugerencias.add(nuevo);
+				}
 		}
-
 		return sugerencias;
 	}
 
@@ -316,6 +295,14 @@ public class Calculo {
 				return relac;
 		}
 		throw new RelacionNoValidaException();
+	}
+
+	/**
+	 * @param relacion  la relacion a considerar
+	 * @param parametro el criterio minimo a cumplir en la relacion
+	 */
+	private boolean buenaRelacion(Relacion relacion, double parametro) {
+		return parametro < (relacion.getLikes() * .4 + relacion.gettInterDiaria() * 1.5);
 	}
 
 	public void setCoordinador(Coordinador coordinador) {

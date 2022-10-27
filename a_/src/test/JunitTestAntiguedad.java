@@ -1,8 +1,7 @@
 package test;
 
-import static org.junit.jupiter.api.Assertions.fail;
-
 import java.io.FileNotFoundException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import datos.CargarDatos;
+import modelo.Genero;
 import modelo.Relacion;
 import modelo.Usuario;
 import negocio.Calculo;
@@ -36,14 +36,9 @@ public class JunitTestAntiguedad {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		calculo = new Calculo(usuarios, relaciones);
+		calculo = new Calculo();
+		calculo.calculoDatos(usuarios, relaciones);
 		listUsr = calculo.mostrarUsuarios();
-	}
-
-	
-	@Test
-	public void test() {
-		fail("Not yet implemented");
 	}
 
 	@Test (expected = UsuarioNoValidoException.class)
@@ -54,8 +49,8 @@ public class JunitTestAntiguedad {
 	@Test (expected = UsuarioNoValidoException.class)
 	public void testException2() {
 		Usuario usr1 = listUsr.get(0);
-		Usuario usr2 = listUsr.get(1);
-		
+		// USUARIOS SIN RELACION ALGUNA
+		Usuario usr2 = new Usuario("1", "juan", LocalDate.of(2002, 8, 23), Genero.valueOf("MASCULINO"), null, null);
 		calculo.antiguedad(usr1, usr2);
 		
 	}
