@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 
 import javax.swing.JButton;
@@ -14,6 +13,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+
+import org.apache.log4j.Logger;
 
 import controlador.Coordinador;
 import datos.RelacionRepetidaException;
@@ -25,6 +26,8 @@ import util.Validation;
 public class RelacionesForm extends JDialog {
 
 	private Coordinador coordinador;
+
+	final static Logger logger = Logger.getLogger(RelacionesForm.class);
 
 	private JPanel contentPane;
 	private JTextField jtfUsr1;
@@ -221,7 +224,7 @@ public class RelacionesForm extends JDialog {
 				if (JOptionPane.OK_OPTION == resp) {
 					usr1 = coordinador.buscarUsuario(new Usuario(jtfUsr1.getText(), null, null, null, null, null));
 					usr2 = coordinador.buscarUsuario(new Usuario(jtfUsr2.getText(), null, null, null, null, null));
-
+					logger.info("Relacion borrada");
 					coordinador.borrarRelacion((new Relacion(usr1, usr2, 0, 0, null)));
 				}
 				return;
@@ -229,6 +232,8 @@ public class RelacionesForm extends JDialog {
 			}
 
 			boolean valido = true;
+
+			logger.debug("Ingresa validar campos");
 
 			lblErrorUsr1.setText("");
 			lblErrorUsr2.setText("");
@@ -275,30 +280,37 @@ public class RelacionesForm extends JDialog {
 				valido = false;
 			}
 
-			if (!valido)
+			if (!valido) {
+				logger.error("Campos no v�lidos!");
 				return;
-
+			}
 			try {
 				usr1 = coordinador.buscarUsuario(new Usuario(id1, null, null, null, null, null));
 				usr2 = coordinador.buscarUsuario(new Usuario(id2, null, null, null, null, null));
 			} catch (UsuarioNoValidoException e) {
+				logger.error("Usuario no existe!");
 				JOptionPane.showMessageDialog(null, "ID ??!");
 				return;
 			}
-			
+
 			Relacion relacion = new Relacion(usr1, usr2, imteraccion, likes, fecha);
-			
+
 			if (event.getSource() == btnInsertar)
 				try {
 					coordinador.insertarRelacion(relacion);
 
 				} catch (RelacionRepetidaException e) {
-					
+					logger.error("Esta Relacion ya existe!");
 					JOptionPane.showMessageDialog(null, "Esta Relacion ya existe!");
 					return;
 				}
-			if (event.getSource() == btnModificar)
+			if (event.getSource() == btnModificar) {
+				logger.info("Relacion Agregada");
 				coordinador.modificarRelacion(relacion);
+			}
+
+			logger.info("Relacion Agregada");
+			JOptionPane.showMessageDialog(null, "Relacion Agregada\n" + relacion);
 		}
 	}
 

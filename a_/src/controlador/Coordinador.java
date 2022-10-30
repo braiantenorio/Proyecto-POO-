@@ -96,7 +96,7 @@ public class Coordinador {
 
 	}
 
-	public List<Relacion> antiguedad(Usuario usu1, Usuario usu2) {
+	public List<Relacion> antiguedad(Usuario usu1, Usuario usu2) throws IllegalArgumentException {
 		return calculo.antiguedad(usu1, usu2);
 	}
 

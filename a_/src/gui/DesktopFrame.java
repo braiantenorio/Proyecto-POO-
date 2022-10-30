@@ -18,10 +18,11 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
+
+import org.apache.log4j.Logger;
 
 import controlador.AppFacade;
 import controlador.Coordinador;
@@ -30,10 +31,10 @@ import modelo.Usuario;
 import negocio.RelacionNoValidaException;
 import negocio.UsuarioNoValidoException;
 import net.datastructures.Entry;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.JScrollBar;
 
 public class DesktopFrame extends JFrame {
+
+	final static Logger logger = Logger.getLogger(DesktopFrame.class);
 
 	private Coordinador coordinador;
 	private ButtonGroup btnGroupRadio;
@@ -94,7 +95,6 @@ public class DesktopFrame extends JFrame {
 		textAreaConsultas.setVisible(false);
 		textAreaConsultas.setBounds(10, 11, 484, 202);
 		ContentPanel.add(textAreaConsultas);
-		
 
 		list = new JList();
 		list.setEnabled(false);
@@ -137,6 +137,7 @@ public class DesktopFrame extends JFrame {
 				textFieldUsuario2.setVisible(false);
 				btnAntiguedad.setVisible(false);
 				String gradoMedio = String.valueOf(coordinador.gradoMedio());
+				
 				lblConsultas.setEnabled(true);
 				lblConsultas.setText("Grado medio: " + gradoMedio);
 			}
@@ -228,12 +229,18 @@ public class DesktopFrame extends JFrame {
 
 				List<Relacion> r = null;
 				try {
-					r = coordinador.antiguedad(AppFacade.usuarios.get(codUsuario1),
-							AppFacade.usuarios.get(codUsuario2));
+					r = coordinador.antiguedad(coordinador.buscarUsuario(new Usuario(codUsuario1,null,null,null,null,null)),
+							coordinador.buscarUsuario(new Usuario(codUsuario2,null,null,null,null,null)));
+				} catch (IllegalArgumentException ex){
+					logger.error("Relaciones no existen!");
+					JOptionPane.showMessageDialog(null, "no existe relacion posible!");
+					return;
 				} catch (UsuarioNoValidoException ex) {
+					logger.error("Usuario no existe...!");
 					JOptionPane.showMessageDialog(null, ex.getMessage());
 					return;
 				} catch (RelacionNoValidaException ex) {
+					logger.error("Mismo Usuario!");
 					JOptionPane.showMessageDialog(null, ex.getMessage());
 					return;
 				}
@@ -249,7 +256,7 @@ public class DesktopFrame extends JFrame {
 							+ re.getUsr2().getCodigo() + "\n");
 
 				}
-
+				logger.info("Consulta concretada");
 			}
 		});
 		btnAntiguedad.setBounds(6, 212, 95, 23);

@@ -44,10 +44,13 @@ public class Calculo {
 
 	private Calculo() {
 
+		usuarios = new TreeMap<String, Usuario>();
+		relaciones = new ArrayList<Relacion>();
+
 		usuarioService = new UsuarioServiceImp();
 		usuarios = usuarioService.buscarTodos();
 		relacionService = new RelacionServiceImp();
-		relaciones = relacionService.buscarTodos();
+		relaciones.addAll(relacionService.buscarTodos());
 
 	}
 
@@ -127,7 +130,7 @@ public class Calculo {
 	public List<Relacion> antiguedad(Usuario src, Usuario target) {
 		if (src == null || target == null)
 			throw new UsuarioNoValidoException("Codigo no valido");
-		if (usuarios.get(src.getCodigo()) == null || usuarios.get(target.getCodigo()) == null)
+		if (vertices.get(src.getCodigo()) == null || vertices.get(target.getCodigo()) == null)
 			throw new UsuarioNoValidoException("Codigo no valido");
 		if (src.equals(target))
 			throw new RelacionNoValidaException("Mismo usuario");
@@ -147,8 +150,8 @@ public class Calculo {
 						result.getElement().gettSiendoAmigos());
 			}
 		}
-
 		PositionalList<Vertex<Usuario>> lista = GraphAlgorithms.shortestPathList(rapido, res.get(src), res.get(target));
+
 		List<Relacion> answer = new ArrayList<Relacion>();
 
 		Vertex<Usuario> v1, v2;

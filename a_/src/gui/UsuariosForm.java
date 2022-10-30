@@ -5,7 +5,6 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 
 import javax.swing.JButton;
@@ -16,6 +15,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+import org.apache.log4j.Logger;
+
 import controlador.Coordinador;
 import datos.UsuarioRepetidoException;
 import modelo.Genero;
@@ -24,6 +25,9 @@ import modelo.Usuario;
 import util.Validation;
 
 public class UsuariosForm extends JDialog {
+
+	final static Logger logger = Logger.getLogger(UsuariosForm.class);
+
 	private Coordinador coordinador;
 
 	private JPanel contentPane;
@@ -238,8 +242,10 @@ public class UsuariosForm extends JDialog {
 			if (event.getSource() == btnBorrar) {
 				int resp = JOptionPane.showConfirmDialog(null, "Est� seguro que borra este registro?", "Confirmar",
 						JOptionPane.YES_NO_OPTION);
-				if (JOptionPane.OK_OPTION == resp)
+				if (JOptionPane.OK_OPTION == resp) {
 					coordinador.borrarUsuario(new Usuario(jtfCodigo.getText(), null, null, null, null, null));
+					logger.info("Usuario borrado");
+				}
 				return;
 			}
 
@@ -311,8 +317,10 @@ public class UsuariosForm extends JDialog {
 				valido = false;
 			}
 
-			if (!valido)
+			if (!valido) {
+				logger.error("Campos no v�lidos!");
 				return;
+			}
 
 			Usuario usuario = new Usuario(codigo, nombre, LocalDate.parse(fecha), Genero.valueOf(genero), localidad,
 					NivelAcademico.valueOf(nivelAcademico));
@@ -321,12 +329,17 @@ public class UsuariosForm extends JDialog {
 				try {
 					coordinador.insertarUsuario(usuario);
 				} catch (UsuarioRepetidoException e) {
+					logger.error("Este usuario ya existe!");
 					JOptionPane.showMessageDialog(null, "Este Usuario ya existe!");
 					return;
 				}
-			if (event.getSource() == btnModificar)
+			if (event.getSource() == btnModificar) {
 				coordinador.modificarUsuario(usuario);
+				logger.info("Usuario Modificado");
+				return;
+			}
 
+			logger.info("Usuario Agregado");
 		}
 	}
 
