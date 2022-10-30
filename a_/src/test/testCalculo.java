@@ -20,7 +20,7 @@ public class testCalculo {
 	public static void main(String[] args) {
 		TreeMap<String, Usuario> usuarios = new TreeMap<>();
 		List<Relacion> relaciones = new ArrayList<>();
-		Calculo calculo = new Calculo();
+		Calculo calculo = Calculo.getCalculo();
 
 		try {
 			usuarios = CargarDatos.cargarUsuarios("users.txt");
@@ -38,7 +38,6 @@ public class testCalculo {
 			e.printStackTrace();
 		}
 
-		calculo = new Calculo();
 		calculo.calculoDatos(usuarios, relaciones);
 		
 		

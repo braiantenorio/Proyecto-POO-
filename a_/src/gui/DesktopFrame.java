@@ -21,16 +21,17 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.ScrollPaneConstants;
 import javax.swing.border.LineBorder;
 
-import controlador.Aplicacion;
+import controlador.AppFacade;
 import controlador.Coordinador;
 import modelo.Relacion;
 import modelo.Usuario;
 import negocio.RelacionNoValidaException;
 import negocio.UsuarioNoValidoException;
 import net.datastructures.Entry;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.JScrollBar;
 
 public class DesktopFrame extends JFrame {
 
@@ -55,26 +56,25 @@ public class DesktopFrame extends JFrame {
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 
-		JMenu mnNewMenu_1 = new JMenu("Opcion");
-		menuBar.add(mnNewMenu_1);
+		JMenu mnNewMenu = new JMenu("Opcion");
+		menuBar.add(mnNewMenu);
 
 		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Usuarios");
 		mntmNewMenuItem_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				lblConsultas.setText("");
-				lblConsultas.setEnabled(false);
-				textFieldUsuario1.setVisible(false);
-				textFieldUsuario2.setVisible(false);
-				btnAntiguedad.setVisible(false);
-				textAreaConsultas.setEnabled(false);
-				textAreaConsultas.setVisible(false);
-				textAreaConsultas.setText("");
-
-				mostrarUsuarioList();
-
+				coordinador.mostrarUsuarioList();
 			}
 		});
-		mnNewMenu_1.add(mntmNewMenuItem_1);
+		mnNewMenu.add(mntmNewMenuItem_1);
+
+		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Relaciones");
+		mntmNewMenuItem_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				coordinador.mostrarRelacionList();
+			}
+		});
+
+		mnNewMenu.add(mntmNewMenuItem_2);
 
 		// contentPanel
 		JPanel ContentPanel = new JPanel();
@@ -94,6 +94,7 @@ public class DesktopFrame extends JFrame {
 		textAreaConsultas.setVisible(false);
 		textAreaConsultas.setBounds(10, 11, 484, 202);
 		ContentPanel.add(textAreaConsultas);
+		
 
 		list = new JList();
 		list.setEnabled(false);
@@ -227,8 +228,8 @@ public class DesktopFrame extends JFrame {
 
 				List<Relacion> r = null;
 				try {
-					r = coordinador.antiguedad(Aplicacion.usuarios.get(codUsuario1),
-							Aplicacion.usuarios.get(codUsuario2));
+					r = coordinador.antiguedad(AppFacade.usuarios.get(codUsuario1),
+							AppFacade.usuarios.get(codUsuario2));
 				} catch (UsuarioNoValidoException ex) {
 					JOptionPane.showMessageDialog(null, ex.getMessage());
 					return;
@@ -270,10 +271,12 @@ public class DesktopFrame extends JFrame {
 		list.setVisible(true);
 		list.setEnabled(true);
 
-		String[] nombres = new String[coordinador.mostrarUsuarios().size()];
-		for (int i = 0; i < coordinador.mostrarUsuarios().size(); i++) {
-			nombres[i] = coordinador.mostrarUsuarios().get(i).toString();
-
+		String[] nombres = new String[coordinador.listaUsuarios().size()];
+		int i = 0;
+		// for (int i = 0; i < coordinador.listaUsuarios().size(); i++) {
+		// nombres[i] = coordinador.listaUsuarios().get(i).toString();
+		for (Entry<String, Usuario> u : coordinador.listaUsuarios().entrySet()) {
+			nombres[i++] = u.getValue().toString();
 		}
 
 		list.setListData(nombres);

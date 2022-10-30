@@ -12,6 +12,7 @@ import modelo.Genero;
 import modelo.NivelAcademico;
 import modelo.Relacion;
 import modelo.Usuario;
+import negocio.UsuarioNoValidoException;
 import net.datastructures.TreeMap;
 
 public class CargarDatos {
@@ -40,20 +41,23 @@ public class CargarDatos {
 		String codigo, nombre, ciudadAct;
 		String genero;
 		String nivelAcademico;
-		String fechaNac;
+		int fechaAnho, fechaMes, fechaDia;
 		Usuario usuario;
 		try {
 			while (read.hasNext()) {
 				codigo = read.next();
 				nombre = read.next();
-				fechaNac = read.next();
+				fechaAnho = read.nextInt();
+				fechaMes = read.nextInt();
+				fechaDia = read.nextInt();
 				genero = read.next();
 				ciudadAct = read.next();
 				nivelAcademico = read.next();
-				usuario = new Usuario(codigo, nombre, LocalDate.parse(fechaNac), Genero.valueOf(genero.toUpperCase()),
-						ciudadAct, NivelAcademico.valueOf(nivelAcademico.toUpperCase()));
+				usuario = new Usuario(codigo, nombre, LocalDate.of(fechaAnho, fechaMes, fechaDia),
+						Genero.valueOf(genero.toUpperCase()), ciudadAct,
+						NivelAcademico.valueOf(nivelAcademico.toUpperCase()));
 				if (usuarios.get(codigo) != null)
-					throw new UsuarioRepetidoException ("usuario repetido:"+codigo);
+					throw new UsuarioRepetidoException("usuario repetido:" + codigo);
 				usuarios.put(codigo, usuario);
 			} // toUpperCase reduce error con el formato
 		} catch (InputMismatchException e) {
@@ -84,7 +88,7 @@ public class CargarDatos {
 		read.useDelimiter("\\s*;\\s*");
 		Usuario usr1, usr2;
 		int likes, tInterDiaria;
-		String fechaAmistad;
+		int anio, mes, dia;
 		Relacion relacion;
 		try {
 			while (read.hasNext()) {
@@ -92,11 +96,16 @@ public class CargarDatos {
 				usr2 = usuarios.get(read.next());
 				tInterDiaria = read.nextInt();
 				likes = read.nextInt();
-				fechaAmistad = read.next();
-				relacion = new Relacion(usr1, usr2, tInterDiaria, likes, LocalDate.parse(fechaAmistad));
+				anio = read.nextInt();
+				mes = read.nextInt();
+				dia = read.nextInt();
+				if (usr1 == null || usr2 == null)
+					throw new UsuarioNoValidoException();
+				relacion = new Relacion(usr1, usr2, tInterDiaria, likes, LocalDate.of(anio, mes, dia));
 				if (relaciones.contains(relacion))
-					throw new RelacionRepetidaException("relacion:"+usr1.getCodigo()+"-"+usr2.getCodigo());
+					throw new RelacionRepetidaException("relacion:" + usr1.getCodigo() + "-" + usr2.getCodigo());
 				relaciones.add(relacion);
+
 			}
 		} catch (InputMismatchException e) {
 			System.out.printf("Error archivo %s con formato invalido.", fileName);

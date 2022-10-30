@@ -51,7 +51,15 @@ public class Relacion {
 		this.likes = likes;
 	}
 
-	public int gettSiendoAmigos() {	
+	public LocalDate getFecha() {
+		return fecha;
+	}
+
+	public void setFecha(LocalDate fecha) {
+		this.fecha = fecha;
+	}
+
+	public int gettSiendoAmigos() {
 		return (int) ChronoUnit.DAYS.between(fecha, LocalDate.now());
 	}
 
@@ -88,7 +96,8 @@ public class Relacion {
 
 	@Override
 	public String toString() {
-		return usr1.getCodigo()+"-"+usr2.getCodigo()+"Tiempo de interaccion diaria: " + tInterDiaria + " Cantidad de likes:" + likes;
+		return usr1.getCodigo() + "-" + usr2.getCodigo() + "Tiempo de interaccion diaria: " + tInterDiaria
+				+ " Cantidad de likes:" + likes;
 	}
 
 }

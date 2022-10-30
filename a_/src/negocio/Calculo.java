@@ -6,6 +6,8 @@ import java.util.Comparator;
 import java.util.List;
 
 import controlador.Coordinador;
+import datos.RelacionRepetidaException;
+import datos.UsuarioRepetidoException;
 import modelo.Relacion;
 import modelo.Usuario;
 import net.datastructures.AdjacencyMapGraph;
@@ -19,21 +21,37 @@ import net.datastructures.PositionalList;
 import net.datastructures.ProbeHashMap;
 import net.datastructures.TreeMap;
 import net.datastructures.Vertex;
+import servicio.RelacionService;
+import servicio.RelacionServiceImp;
+import servicio.UsuarioService;
+import servicio.UsuarioServiceImp;
 
 public class Calculo {
 
-	private static Calculo calculo;
+	private static Calculo calculo = null;
 
 	private Graph<Usuario, Relacion> redSocial;
 	private Graph<Usuario, Integer> rapido = null;
 	private TreeMap<String, Vertex<Usuario>> vertices;
 	private Map<Usuario, Vertex<Usuario>> res;
 	private Coordinador coordinador;
+	private Map<String, Usuario> usuarios;
+	private List<Relacion> relaciones;
+	private UsuarioService usuarioService;
+	private RelacionService relacionService;
 
-	// constructor vacio
-	public Calculo() {
+	private Calculo() {
+		usuarioService = new UsuarioServiceImp();
+		usuarios = usuarioService.buscarTodos();
+
+		relacionService = new RelacionServiceImp();
+		relaciones = relacionService.buscarTodos();
+
 	}
 
+	/**
+	 * @return Calculo
+	 */
 	public static Calculo getCalculo() {
 		if (calculo == null) {
 			calculo = new Calculo();
@@ -149,10 +167,7 @@ public class Calculo {
 	 * 
 	 * @return List<Usuario> con todos los usuarios
 	 */
-	public List<Usuario> mostrarUsuarios() {
-		List<Usuario> usuarios = new ArrayList<Usuario>();
-		for (Vertex<Usuario> usr : redSocial.vertices())
-			usuarios.add(usr.getElement());
+	public Map<String,Usuario> mostrarUsuarios() {
 		return usuarios;
 
 	}
@@ -163,10 +178,6 @@ public class Calculo {
 	 * @return List<Relacion> con todos las relacion
 	 */
 	public List<Relacion> mostrarRelaciones() {
-		List<Relacion> relaciones = new ArrayList<>();
-		for (Edge<Relacion> relacion : redSocial.edges()) {
-			relaciones.add(relacion.getElement());
-		}
 		return relaciones;
 	}
 
@@ -206,7 +217,8 @@ public class Calculo {
 		int interaccion;
 
 		// obtener los usuarios con sus interacciones
-		for (Usuario usuario : mostrarUsuarios()) {
+		for (Entry<String,Usuario> usu : mostrarUsuarios().entrySet()) {
+			Usuario usuario = usu.getValue();
 			interaccion = 0;
 			for (Relacion relacion : mostrarRelaciones()) {
 				if (usuario.equals(relacion.getUsr1()) || usuario.equals(relacion.getUsr2()))
@@ -272,16 +284,17 @@ public class Calculo {
 	 * estar en la redSocial.
 	 * 
 	 * @param cod el codigo del usuario que se buscara
+	 * @throws UsuarioNoValidoException si no ingresa nada
 	 * @return el usuario, null en caso contrario
 	 */
 	public Usuario busquedaUsuario(String cod) {
 		if (cod == null)
 			throw new UsuarioNoValidoException();
-		return vertices.get(cod).getElement();
+		return usuarios.get(cod);
 	}
 
 	/**
-	 * @return la interaccion de una relacion
+	 * @return
 	 */
 	public Relacion busquedaRelacion(Usuario usr1, Usuario usr2) {
 		Relacion relacion = new Relacion(usr1, usr2, 0, 0, null);
@@ -307,5 +320,58 @@ public class Calculo {
 
 	public void setCoordinador(Coordinador coordinador) {
 		this.coordinador = coordinador;
+	}
+
+	// DAO
+	public void borrarUsuario(Usuario usuario) {
+		if (vertices.get(usuario.getCodigo()) == null)
+			throw new UsuarioNoValidoException();
+		vertices.remove(usuario.getCodigo());
+		
+		usuarioService.borrar(usuario);
+	}
+
+	public void modificarUsuario(Usuario usuario) {
+		vertices.put(usuario.getCodigo(), vertices.get(usuario.getCodigo()));
+		usuarioService.actualizar(usuario);
+	}
+
+	public void agregarUsuario(Usuario usuario) {
+		if (vertices.get(usuario.getCodigo()) != null)
+			throw new UsuarioRepetidoException();
+		usuarios.put(usuario.getCodigo(), usuario);
+		usuarioService.insertar(usuario);
+	}
+
+	public void borrarRelacion(Relacion relacion) {
+		Relacion rl = buscarRelacion(relacion);
+		relaciones.remove(rl);
+		relacionService.borrar(relacion);
+		
+	}
+
+	private Relacion buscarRelacion(Relacion relacion) {
+		int pos = relaciones.indexOf(relacion);
+		if (pos == -1)
+			return null;
+		return relaciones.get(pos);
+	}
+
+	public void agregarRelacion(Relacion relacion) {
+		if (relaciones.contains(relacion))
+			throw new RelacionRepetidaException();
+		relaciones.add(relacion);
+		relacionService.insertar(relacion);
+		
+		redSocial.insertEdge(vertices.get(relacion.getUsr1().getCodigo()), vertices.get(relacion.getUsr1().getCodigo()), relacion);
+	}
+
+	public void modificarRelacion(Relacion relacion) {
+		int pos = relaciones.indexOf(relacion);
+		relaciones.set(pos, relacion);
+		relacionService.actualizar(relacion);
+		
+		borrarRelacion(relacion);
+		agregarRelacion(relacion);
 	}
 }

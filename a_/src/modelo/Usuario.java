@@ -22,6 +22,8 @@ public class Usuario {
 		this.genero = genero;
 		this.ciudadAct = ciudadAct;
 		this.nivelAcademico = nivelAcademico;
+		
+
 	}
 
 	public String getCodigo() {
@@ -42,6 +44,25 @@ public class Usuario {
 
 	public Genero getGenero() {
 		return genero;
+	}
+
+	public LocalDate getFechadenac() {
+		return fechadenac;
+	}
+
+	public void setFechadenac(LocalDate fechadenac) {
+		this.fechadenac = fechadenac;
+	}
+
+	public NivelAcademico getNivelAcademico() {
+		return nivelAcademico;
+	}
+
+	/**
+	 * @param nivelAcademico the nivelAcademico to set
+	 */
+	public void setNivelAcademico(NivelAcademico nivelAcademico) {
+		this.nivelAcademico = nivelAcademico;
 	}
 
 	public void setGenero(Genero genero) {
@@ -92,8 +113,8 @@ public class Usuario {
 
 	@Override
 	public String toString() {
-		return "codigo=" + codigo + ", nombre=" + nombre + ", edad=" + getEdad().getYears() + ", genero="
-				+ genero + ", ciudadAct=" + ciudadAct + ", nivelAcademico=" + nivelAcademico ;
+		return "codigo=" + codigo + ", nombre=" + nombre + ", edad=" + getEdad().getYears() + ", genero=" + genero
+				+ ", ciudadAct=" + ciudadAct + ", nivelAcademico=" + nivelAcademico;
 	}
 
 }

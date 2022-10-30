@@ -14,6 +14,7 @@ import modelo.Relacion;
 import modelo.Usuario;
 import negocio.Calculo;
 import negocio.UsuarioNoValidoException;
+import net.datastructures.Map;
 import net.datastructures.TreeMap;
 
 public class JunitTestAntiguedad {
@@ -21,7 +22,7 @@ public class JunitTestAntiguedad {
 	TreeMap<String, Usuario> usuarios = new TreeMap<>();
 	List<Relacion> relaciones = new ArrayList<>();
 	Calculo calculo;
-	List<Usuario> listUsr;
+	Map<String,Usuario> mapUsr;
 	List<Relacion> listRel;
 
 	@Before
@@ -36,9 +37,9 @@ public class JunitTestAntiguedad {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		calculo = new Calculo();
+		calculo = Calculo.getCalculo();
 		calculo.calculoDatos(usuarios, relaciones);
-		listUsr = calculo.mostrarUsuarios();
+		mapUsr = calculo.mostrarUsuarios();
 	}
 
 	@Test (expected = UsuarioNoValidoException.class)
@@ -48,7 +49,7 @@ public class JunitTestAntiguedad {
 	
 	@Test (expected = UsuarioNoValidoException.class)
 	public void testException2() {
-		Usuario usr1 = listUsr.get(0);
+		Usuario usr1 = mapUsr.get("102");
 		// USUARIOS SIN RELACION ALGUNA
 		Usuario usr2 = new Usuario("1", "juan", LocalDate.of(2002, 8, 23), Genero.valueOf("MASCULINO"), null, null);
 		calculo.antiguedad(usr1, usr2);
