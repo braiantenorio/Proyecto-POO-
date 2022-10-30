@@ -34,16 +34,18 @@ public class Calculo {
 	private Graph<Usuario, Integer> rapido = null;
 	private TreeMap<String, Vertex<Usuario>> vertices;
 	private Map<Usuario, Vertex<Usuario>> res;
+
 	private Coordinador coordinador;
+
 	private Map<String, Usuario> usuarios;
 	private List<Relacion> relaciones;
 	private UsuarioService usuarioService;
 	private RelacionService relacionService;
 
 	private Calculo() {
+
 		usuarioService = new UsuarioServiceImp();
 		usuarios = usuarioService.buscarTodos();
-
 		relacionService = new RelacionServiceImp();
 		relaciones = relacionService.buscarTodos();
 
@@ -125,7 +127,7 @@ public class Calculo {
 	public List<Relacion> antiguedad(Usuario src, Usuario target) {
 		if (src == null || target == null)
 			throw new UsuarioNoValidoException("Codigo no valido");
-		if (vertices.get(src.getCodigo()) == null || vertices.get(target.getCodigo()) == null)
+		if (usuarios.get(src.getCodigo()) == null || usuarios.get(target.getCodigo()) == null)
 			throw new UsuarioNoValidoException("Codigo no valido");
 		if (src.equals(target))
 			throw new RelacionNoValidaException("Mismo usuario");
@@ -167,7 +169,7 @@ public class Calculo {
 	 * 
 	 * @return List<Usuario> con todos los usuarios
 	 */
-	public Map<String,Usuario> mostrarUsuarios() {
+	public Map<String, Usuario> mostrarUsuarios() {
 		return usuarios;
 
 	}
@@ -217,7 +219,7 @@ public class Calculo {
 		int interaccion;
 
 		// obtener los usuarios con sus interacciones
-		for (Entry<String,Usuario> usu : mostrarUsuarios().entrySet()) {
+		for (Entry<String, Usuario> usu : mostrarUsuarios().entrySet()) {
 			Usuario usuario = usu.getValue();
 			interaccion = 0;
 			for (Relacion relacion : mostrarRelaciones()) {
@@ -290,6 +292,8 @@ public class Calculo {
 	public Usuario busquedaUsuario(String cod) {
 		if (cod == null)
 			throw new UsuarioNoValidoException();
+		if (usuarios.get(cod) == null)
+			throw new UsuarioNoValidoException();
 		return usuarios.get(cod);
 	}
 
@@ -323,31 +327,30 @@ public class Calculo {
 	}
 
 	// DAO
-	public void borrarUsuario(Usuario usuario) {
-		if (vertices.get(usuario.getCodigo()) == null)
-			throw new UsuarioNoValidoException();
-		vertices.remove(usuario.getCodigo());
-		
-		usuarioService.borrar(usuario);
-	}
-
 	public void modificarUsuario(Usuario usuario) {
 		vertices.put(usuario.getCodigo(), vertices.get(usuario.getCodigo()));
+
+		usuarios.put(usuario.getCodigo(), usuario);
 		usuarioService.actualizar(usuario);
 	}
 
+	// .
 	public void agregarUsuario(Usuario usuario) {
 		if (vertices.get(usuario.getCodigo()) != null)
 			throw new UsuarioRepetidoException();
+
+		vertices.put(usuario.getCodigo(), redSocial.insertVertex(usuario));
 		usuarios.put(usuario.getCodigo(), usuario);
 		usuarioService.insertar(usuario);
 	}
 
-	public void borrarRelacion(Relacion relacion) {
-		Relacion rl = buscarRelacion(relacion);
-		relaciones.remove(rl);
-		relacionService.borrar(relacion);
-		
+	//
+	public void borrarUsuario(Usuario usuario) {
+		if (vertices.get(usuario.getCodigo()) == null)
+			throw new UsuarioNoValidoException();
+
+		vertices.remove(usuario.getCodigo());
+		usuarioService.borrar(usuario);
 	}
 
 	private Relacion buscarRelacion(Relacion relacion) {
@@ -357,21 +360,31 @@ public class Calculo {
 		return relaciones.get(pos);
 	}
 
+	//
 	public void agregarRelacion(Relacion relacion) {
 		if (relaciones.contains(relacion))
 			throw new RelacionRepetidaException();
 		relaciones.add(relacion);
 		relacionService.insertar(relacion);
-		
-		redSocial.insertEdge(vertices.get(relacion.getUsr1().getCodigo()), vertices.get(relacion.getUsr1().getCodigo()), relacion);
 	}
 
+	//
+	public void borrarRelacion(Relacion relacion) {
+		Relacion rl = buscarRelacion(relacion);
+		relaciones.remove(rl);
+		relacionService.borrar(relacion);
+
+	}
+
+	//
 	public void modificarRelacion(Relacion relacion) {
 		int pos = relaciones.indexOf(relacion);
 		relaciones.set(pos, relacion);
 		relacionService.actualizar(relacion);
-		
-		borrarRelacion(relacion);
-		agregarRelacion(relacion);
+
+	}
+
+	public void actualizarDatos() {
+		calculoDatos((TreeMap<String, Usuario>) usuarioService.buscarTodos(), relacionService.buscarTodos());
 	}
 }

@@ -19,6 +19,7 @@ import controlador.Coordinador;
 import datos.RelacionRepetidaException;
 import modelo.Relacion;
 import modelo.Usuario;
+import negocio.UsuarioNoValidoException;
 import util.Validation;
 
 public class RelacionesForm extends JDialog {
@@ -186,7 +187,6 @@ public class RelacionesForm extends JDialog {
 	}
 
 	private void mostrar(Relacion relacion) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		jtfUsr1.setText(relacion.getUsr1().getCodigo());
 		jtfUsr2.setText(relacion.getUsr2().getCodigo());
 		jtfInteraccion.setText(relacion.gettInterDiaria() + "");
@@ -212,15 +212,20 @@ public class RelacionesForm extends JDialog {
 				coordinador.cancelarRelacion();
 				return;
 			}
+
+			Usuario usr1 = null;
+			Usuario usr2 = null;
 			if (event.getSource() == btnBorrar) {
-				int resp = JOptionPane.showConfirmDialog(null, "Est� seguro que borra este registro?", "Confirmar",
+				int resp = JOptionPane.showConfirmDialog(null, "Esta seguro que borra este registro?", "Confirmar",
 						JOptionPane.YES_NO_OPTION);
 				if (JOptionPane.OK_OPTION == resp) {
-					Usuario usr1 = coordinador.buscarUsuario(new Usuario(jtfUsr1.getText(), null, null, null, null, null));
-					Usuario usr2 = coordinador.buscarUsuario(new Usuario(jtfUsr2.getText(), null, null, null, null, null));
-					coordinador.borrarRelacion((new Relacion(usr1,usr2, 0 , 0, null)));
+					usr1 = coordinador.buscarUsuario(new Usuario(jtfUsr1.getText(), null, null, null, null, null));
+					usr2 = coordinador.buscarUsuario(new Usuario(jtfUsr2.getText(), null, null, null, null, null));
+
+					coordinador.borrarRelacion((new Relacion(usr1, usr2, 0, 0, null)));
 				}
 				return;
+
 			}
 
 			boolean valido = true;
@@ -273,14 +278,22 @@ public class RelacionesForm extends JDialog {
 			if (!valido)
 				return;
 
-			Usuario usr1 = coordinador.buscarUsuario(new Usuario(id1, null, null, null, null, null));
-			Usuario usr2 = coordinador.buscarUsuario(new Usuario(id2, null, null, null, null, null));
-
+			try {
+				usr1 = coordinador.buscarUsuario(new Usuario(id1, null, null, null, null, null));
+				usr2 = coordinador.buscarUsuario(new Usuario(id2, null, null, null, null, null));
+			} catch (UsuarioNoValidoException e) {
+				JOptionPane.showMessageDialog(null, "ID ??!");
+				return;
+			}
+			
 			Relacion relacion = new Relacion(usr1, usr2, imteraccion, likes, fecha);
+			
 			if (event.getSource() == btnInsertar)
 				try {
 					coordinador.insertarRelacion(relacion);
+
 				} catch (RelacionRepetidaException e) {
+					
 					JOptionPane.showMessageDialog(null, "Esta Relacion ya existe!");
 					return;
 				}

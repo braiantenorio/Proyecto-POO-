@@ -88,6 +88,7 @@ public class AppFacade {
 
 	public void cargarCalculo() {
 		// calculo.calculoDatos(usuarios, relaciones);
+		
 		calculo.calculoDatos((TreeMap) calculo.mostrarUsuarios(), calculo.mostrarRelaciones());
 		calculo.setCoordinador(coordinador);
 	}

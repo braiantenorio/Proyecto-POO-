@@ -128,6 +128,13 @@ public class Coordinador {
 		usuariosForm.setVisible(true);
 	}
 
+	//
+	public void insertarRelacionesForm() {
+		relacionesForm.accion(Constantes.INSERTAR, null);
+		relacionesForm.setVisible(true);
+		usuariosForm.setVisible(false);
+	}
+
 	public void modificarRelacionForm(Relacion relacion) {
 		relacionesForm.accion(Constantes.MODIFICAR, relacion);
 		relacionesForm.setVisible(true);
@@ -159,7 +166,7 @@ public class Coordinador {
 		return calculo.busquedaUsuario(usuario.getCodigo());
 	};
 
-	public Map<String,Usuario> listaUsuarios() {
+	public Map<String, Usuario> listaUsuarios() {
 		return calculo.mostrarUsuarios();
 	}
 
@@ -167,7 +174,7 @@ public class Coordinador {
 		calculo.agregarUsuario(usuario);
 		usuariosForm.setVisible(false);
 		usuariosList.addRow(usuario);
-		
+
 	}
 
 	public void modificarUsuario(Usuario usuario) {
@@ -180,13 +187,6 @@ public class Coordinador {
 	public void borrarUsuario(Usuario usuario) {
 		calculo.borrarUsuario(usuario);
 		usuariosList.setAccion(Constantes.BORRAR);
-		usuariosForm.setVisible(false);
-	}
-
-	//
-	public void insertarRelacionesForm() {
-		relacionesForm.accion(Constantes.INSERTAR, null);
-		relacionesForm.setVisible(true);
 		usuariosForm.setVisible(false);
 	}
 

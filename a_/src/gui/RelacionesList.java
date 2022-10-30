@@ -115,7 +115,6 @@ public class RelacionesList extends JDialog {
 	}
 
 	private void updateRow(int row) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		tableRelacion.setValueAt(relacion.getUsr1().getCodigo(), row, 0);
 		tableRelacion.setValueAt(relacion.getUsr2().getCodigo(), row, 1);
 		tableRelacion.setValueAt(relacion.gettInterDiaria(), row, 2);

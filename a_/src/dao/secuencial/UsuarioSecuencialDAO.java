@@ -29,7 +29,12 @@ public class UsuarioSecuencialDAO implements UsuarioDAO {
 	public UsuarioSecuencialDAO() {
 		ResourceBundle rb = ResourceBundle.getBundle("secuencial");
 		name = rb.getString("usuario");
-		map = readFromFile(name);
+		try {
+			map = readFromFile(name);
+		} catch (UsuarioRepetidoException e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
 	}
 
 	private Map<String, Usuario> readFromFile(String file) {

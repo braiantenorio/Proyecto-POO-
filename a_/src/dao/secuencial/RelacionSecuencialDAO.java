@@ -29,7 +29,12 @@ public class RelacionSecuencialDAO implements RelacionDAO {
 	public RelacionSecuencialDAO() {
 		ResourceBundle rb = ResourceBundle.getBundle("secuencial");
 		name = rb.getString("relacion");
+		try {
 		list = readFromFile(name);
+		} catch (RelacionRepetidaException e){
+			e.printStackTrace();
+			System.exit(0);
+		}
 	}
 
 	private List<Relacion> readFromFile(String file) {
@@ -57,8 +62,9 @@ public class RelacionSecuencialDAO implements RelacionDAO {
 				mes = inFile.nextInt();
 				dia = inFile.nextInt();
 				relacion = new Relacion(usr1, usr2, tInterDiaria, likes, LocalDate.of(anio, mes, dia));
-				if (list.contains(relacion))
-					throw new RelacionRepetidaException();
+				if (list.contains(relacion)) {
+					throw new RelacionRepetidaException("relacion repetida en:"+file);
+				}
 				list.add(relacion);
 			}
 
@@ -85,7 +91,7 @@ public class RelacionSecuencialDAO implements RelacionDAO {
 		try {
 			outFile = new Formatter(file);
 			for (Relacion r : list) {
-
+				
 				outFile.format("%s;%s;%d;%d;%d;%d;%d;\n", r.getUsr1().getCodigo(), r.getUsr2().getCodigo(),
 						r.gettInterDiaria(), r.getLikes(), r.getFecha().getYear(), r.getFecha().getMonthValue(),
 						r.getFecha().getDayOfMonth());
@@ -102,6 +108,7 @@ public class RelacionSecuencialDAO implements RelacionDAO {
 
 	@Override
 	public void insertar(Relacion relacion) {
+		if(!list.contains(relacion))
 		list.add(relacion);
 		writeToFile(list, name);
 	}

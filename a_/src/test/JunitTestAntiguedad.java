@@ -51,7 +51,7 @@ public class JunitTestAntiguedad {
 	public void testException2() {
 		Usuario usr1 = mapUsr.get("102");
 		// USUARIOS SIN RELACION ALGUNA
-		Usuario usr2 = new Usuario("1", "juan", LocalDate.of(2002, 8, 23), Genero.valueOf("MASCULINO"), null, null);
+		Usuario usr2 = new Usuario("1", "juan", LocalDate.of(2002, 8, 23), Genero.valueOf("M"), null, null);
 		calculo.antiguedad(usr1, usr2);
 		
 	}
