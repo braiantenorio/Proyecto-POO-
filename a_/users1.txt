@@ -1,0 +1,10 @@
+101;Nahuel Lopez;25;M;Buenos Aires;
+102;Matias Roca;30;M;Puerto Madryn;
+103;Daniela Medina;20;F;Trelew;
+104;Maria Soto;36;F;Cordoba;
+105;Lujan Soto;26;M;Puerto Madryn;
+106;Diego Correa;18;M;Bahia Blanca;
+107;Carolina Ferrari;40;F;Puerto Madryn;
+108;Ezequiel Zeballos;22;M;Rawson;
+109;Santiago Fernandez;33;M;Comodoro Rivadavia;
+110;Alejandra Cantillo;60;F;Buenos Aires;
