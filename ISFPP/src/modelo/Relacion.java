@@ -1,19 +1,21 @@
 package modelo;
 
+import java.time.LocalDate;
+
 public class Relacion {
     private Usuario usr1;
     private Usuario usr2;
+    private LocalDate fechaComienzoAmistad;
     private int tInterDiaria;
     private int likes;
-    private int tSiendoAmigos;
 
-    public Relacion(Usuario usr1, Usuario usr2, int tInterDiaria, int likes, int tSiendoAmigos2) {
+    public Relacion(Usuario usr1, Usuario usr2, int tInterDiaria, int likes, LocalDate fechaComienzoAmistad) {
         super();
         this.usr1 = usr1;
         this.usr2 = usr2;
         this.tInterDiaria = tInterDiaria;
         this.likes = likes;
-        this.tSiendoAmigos = tSiendoAmigos2;
+        this.fechaComienzoAmistad = fechaComienzoAmistad;
     }
 
     public Usuario getUsr1() {
@@ -48,18 +50,18 @@ public class Relacion {
         this.likes = likes;
     }
 
-    public int gettSiendoAmigos() {
-        return tSiendoAmigos;
+    public LocalDate gettSiendoAmigos() {
+        return fechaComienzoAmistad;
     }
 
-    public void settSiendoAmigos(int tSiendoAmigos) {
-        this.tSiendoAmigos = tSiendoAmigos;
+    public void settSiendoAmigos(LocalDate tSiendoAmigos) {
+        this.fechaComienzoAmistad = tSiendoAmigos;
     }
 
     @Override
     public String toString() {
         return "Tiempo de interaccion diaria: " + tInterDiaria + " Cantidad de likes:" + likes
-                + " Tiempo siendo amigos: " + tSiendoAmigos;
+                + " Tiempo siendo amigos: " + fechaComienzoAmistad;
     }
 
 }

@@ -1,5 +1,6 @@
 package negocio;
 
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -26,7 +27,7 @@ public class Calculo {
     private static Calculo calculo = null;
 
     private Graph<Usuario, Relacion> redSocial;
-    private Graph<Usuario, Integer> rapido = null;
+    private Graph<Usuario, Period> rapido = null;
     private TreeMap<String, Vertex<Usuario>> vertices;
     private Map<Usuario, Vertex<Usuario>> res;
     private Coordinador coordinador;
@@ -113,7 +114,7 @@ public class Calculo {
             for (Edge<Relacion> result : redSocial.edges()) {
                 vert = redSocial.endVertices(result);
                 rapido.insertEdge(res.get(vert[0].getElement()), res.get(vert[1]
-                        .getElement()), result.getElement().gettSiendoAmigos());
+                        .getElement()), result.getElement().getEdad());
             }
         }
 
@@ -194,4 +195,10 @@ public class Calculo {
         this.coordinador = coordinador;
 
     }
+
+    private static int CalculoFecha() {
+        return 0;
+        
+    }
+
 }
