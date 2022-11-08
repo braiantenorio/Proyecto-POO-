@@ -103,8 +103,8 @@ public class UsuariosList extends JDialog {
 
 		row[0] = usr.getCodigo();
 		row[1] = usr.getNombre();
-		row[2] = usr.getGenero();
-		row[3] = usr.getFechadenac();
+		row[2] = usr.getFechadenac();
+		row[3] = usr.getGenero();
 		row[4] = usr.getCiudadAct();
 		row[5] = usr.getNivelAcademico();
 		row[6] = "edit";
@@ -116,8 +116,8 @@ public class UsuariosList extends JDialog {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		tableUsuario.setValueAt(usuario.getCodigo(), row, 0);
 		tableUsuario.setValueAt(usuario.getNombre(), row, 1);
-		tableUsuario.setValueAt(usuario.getGenero(), row, 2);
-		tableUsuario.setValueAt(usuario.getFechadenac(), row, 3);
+		tableUsuario.setValueAt(usuario.getFechadenac(), row, 2);
+		tableUsuario.setValueAt(usuario.getGenero(), row, 3);
 		tableUsuario.setValueAt(usuario.getCiudadAct(), row, 4);
 		tableUsuario.setValueAt(usuario.getNivelAcademico(), row, 5);
 	}

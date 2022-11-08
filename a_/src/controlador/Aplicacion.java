@@ -6,11 +6,10 @@ public class Aplicacion {
 
 		AppFacade miAplicacion = new AppFacade();
 
-		miAplicacion.cargarDatos();
-		miAplicacion.cargarCalculo();
 		miAplicacion.cargarCordinador();
+		miAplicacion.cargarCalculo();
 		miAplicacion.cargarFrame();
 
 	}
 
-}
+} // fin clase Aplicacion

@@ -19,12 +19,17 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
+import org.apache.log4j.Logger;
+
 import controlador.Coordinador;
 import modelo.Relacion;
 import modelo.Usuario;
+import negocio.RelacionNoValidaException;
 
 public class RelacionesList extends JDialog {
 
+	final static Logger logger = Logger.getLogger(UsuariosForm.class);
+	
 	private Coordinador coordinador;
 	private int accion;
 	private Relacion relacion;
@@ -34,6 +39,7 @@ public class RelacionesList extends JDialog {
 	private JTable tableRelacion;
 	private JButton btnInsertar;
 	private JButton btnSalir;
+	private JButton btnActualizar;
 
 	/**
 	 * Create the frame.
@@ -54,6 +60,10 @@ public class RelacionesList extends JDialog {
 		btnSalir.setBounds(178, 280, 114, 32);
 		contentPane.add(btnSalir);
 
+		btnActualizar = new JButton("Actualizar");
+		btnActualizar.setBounds(305, 280, 114, 32);
+		contentPane.add(btnActualizar);
+		
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(38, 25, 673, 244);
 		contentPane.add(scrollPane);
@@ -76,7 +86,7 @@ public class RelacionesList extends JDialog {
 		Handler handler = new Handler();
 		btnInsertar.addActionListener(handler);
 		btnSalir.addActionListener(handler);
-		
+		btnActualizar.addActionListener(handler);
 		setModal(true);
 	}
 
@@ -86,9 +96,10 @@ public class RelacionesList extends JDialog {
 			RelacionesForm relacionForm = null;
 			if (event.getSource() == btnInsertar)
 				coordinador.insertarRelacionesForm();
-			if (event.getSource() == btnSalir) {
+			if (event.getSource() == btnSalir) 
 				coordinador.cancelarListRelacion();
-			}
+			if (event.getSource() == btnActualizar)
+				coordinador.actualizarList();
 			
 		}
 	}
@@ -99,7 +110,9 @@ public class RelacionesList extends JDialog {
 		for (Relacion rel : coordinador.listaRelaciones())
 			if (rel instanceof Relacion)
 				addRow((Relacion) rel);
+		
 	}
+	
 
 	public void addRow(Relacion rel) {
 		Object[] row = new Object[tableRelacion.getModel().getColumnCount()];
@@ -204,11 +217,16 @@ public class RelacionesList extends JDialog {
 				Usuario id1 = coordinador.buscarUsuario(new Usuario(id, null, null, null, null, null));
 				id = tableRelacion.getValueAt(tableRelacion.getSelectedRow(), 1).toString();
 				Usuario id2 = coordinador.buscarUsuario(new Usuario(id, null, null, null, null, null));
+				
+				try {
 				Relacion rel = (Relacion) coordinador.buscarRelacion(new Relacion(id1, id2, 0, 0, null));
 				if (label.equals("edit"))
 					coordinador.modificarRelacionForm(rel);
 				else
 					coordinador.borrarRelacionForm(rel);
+				}catch (RelacionNoValidaException  ex) {
+					logger.error("Relacion No existe");
+				}
 			}
 			if (accion == Constantes.BORRAR)
 				isDeleteRow = true;

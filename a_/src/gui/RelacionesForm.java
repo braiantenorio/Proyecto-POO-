@@ -20,6 +20,7 @@ import controlador.Coordinador;
 import datos.RelacionRepetidaException;
 import modelo.Relacion;
 import modelo.Usuario;
+import negocio.RelacionNoValidaException;
 import negocio.UsuarioNoValidoException;
 import util.Validation;
 
@@ -219,13 +220,22 @@ public class RelacionesForm extends JDialog {
 			Usuario usr1 = null;
 			Usuario usr2 = null;
 			if (event.getSource() == btnBorrar) {
-				int resp = JOptionPane.showConfirmDialog(null, "Esta seguro que borra este registro?", "Confirmar",
-						JOptionPane.YES_NO_OPTION);
-				if (JOptionPane.OK_OPTION == resp) {
+				try {
+
 					usr1 = coordinador.buscarUsuario(new Usuario(jtfUsr1.getText(), null, null, null, null, null));
 					usr2 = coordinador.buscarUsuario(new Usuario(jtfUsr2.getText(), null, null, null, null, null));
+				} catch (UsuarioNoValidoException e) {
+					logger.error("Relacion  inexiste!");
+					JOptionPane.showMessageDialog(null, "Esta Relacion no existe!");
+					return;
+				}
+				int resp = JOptionPane.showConfirmDialog(null, "Esta seguro que borra este registro?", "Confirmar",
+						JOptionPane.YES_NO_OPTION);
+
+				if (JOptionPane.OK_OPTION == resp) {
 					logger.info("Relacion borrada");
 					coordinador.borrarRelacion((new Relacion(usr1, usr2, 0, 0, null)));
+					return;
 				}
 				return;
 
@@ -300,13 +310,18 @@ public class RelacionesForm extends JDialog {
 					coordinador.insertarRelacion(relacion);
 
 				} catch (RelacionRepetidaException e) {
-					logger.error("Esta Relacion ya existe!");
+					logger.error("Relacion ya existe");
 					JOptionPane.showMessageDialog(null, "Esta Relacion ya existe!");
 					return;
 				}
 			if (event.getSource() == btnModificar) {
-				logger.info("Relacion Agregada");
-				coordinador.modificarRelacion(relacion);
+				try {
+					logger.info("Relacion modificada");
+					coordinador.modificarRelacion(relacion);
+				} catch (RelacionNoValidaException e) {
+					logger.info("Relacion no se modifico");
+					JOptionPane.showMessageDialog(null, "Esta Relacion no existe!, boton actualizar");
+				}
 			}
 
 			logger.info("Relacion Agregada");

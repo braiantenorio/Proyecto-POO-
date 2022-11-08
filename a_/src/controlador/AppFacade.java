@@ -1,27 +1,21 @@
 package controlador;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.List;
-
-import javax.swing.JOptionPane;
-
-import datos.CargarDatos;
-import datos.CargarParametros;
-import datos.RelacionRepetidaException;
-import datos.UsuarioRepetidoException;
 import gui.DesktopFrame;
 import gui.RelacionesForm;
 import gui.RelacionesList;
 import gui.UsuariosForm;
 import gui.UsuariosList;
-import modelo.Relacion;
 import modelo.Usuario;
 import negocio.Calculo;
 import negocio.RedSocial;
 import net.datastructures.TreeMap;
 
-//cambiar nombre clase
+/**
+ * Clase que provee las capas a la aplicacion final.
+ * 
+ * El facade es el punto de entrada a la capa de aplicación o bien, el punto de
+ * contacto entre el frontend y el backend.
+ */
 public class AppFacade {
 	// LOGICA
 	private Calculo calculo;
@@ -33,24 +27,18 @@ public class AppFacade {
 	private RelacionesList relacionesList;
 	// CONTROLADOR
 	private Coordinador coordinador;
-	// datos
-	private CargarDatos cargarDatos;
-	private CargarParametros cargarParametros;
-
+	// DAO
 	private RedSocial redSocial;
-
-	public static TreeMap<String, Usuario> usuarios = null;
-	public static List<Relacion> relaciones = null;
 
 	/**
 	 * 
 	 */
 	public AppFacade() {
+		// capa de negocio
 		calculo = Calculo.getCalculo();
+
+		// capa de presentacion
 		desktopFrame = new DesktopFrame();
-		coordinador = new Coordinador();
-		cargarDatos = new CargarDatos();
-		cargarParametros = new CargarParametros();
 
 		usuariosList = new UsuariosList();
 		usuariosForm = new UsuariosForm();
@@ -58,41 +46,25 @@ public class AppFacade {
 		relacionesForm = new RelacionesForm();
 		relacionesList = new RelacionesList();
 
-		redSocial = new RedSocial("");
+		// controlador
+		coordinador = new Coordinador();
 
+		redSocial = new RedSocial();
 	}
 
-	public void cargarDatos() {
-
-		try {
-			CargarParametros.parametros();
-		} catch (IOException e) {
-			JOptionPane.showMessageDialog(null, e);
-			System.exit(-1);
-		}
-
-		try {
-			usuarios = CargarDatos.cargarUsuarios(CargarParametros.getArchivoUsuario());
-			relaciones = CargarDatos.crearRelaciones(CargarParametros.getArchivoRelaciones());
-		} catch (FileNotFoundException e) {
-			JOptionPane.showMessageDialog(null, e);
-			System.exit(-1);
-		} catch (UsuarioRepetidoException e) {
-			JOptionPane.showMessageDialog(null, e);
-			System.exit(-1);
-		} catch (RelacionRepetidaException e) {
-			JOptionPane.showMessageDialog(null, e);
-			System.exit(-1);
-		}
-	}
-
+	/**
+	 * 
+	 * */
 	public void cargarCalculo() {
-		// calculo.calculoDatos(usuarios, relaciones);
-		
-		calculo.calculoDatos((TreeMap) calculo.mostrarUsuarios(), calculo.mostrarRelaciones());
+		redSocial.setCoordinador(coordinador);
+
+		calculo.calculoDatos((TreeMap<String, Usuario>) coordinador.listaUsuarios(), coordinador.listaRelaciones());
 		calculo.setCoordinador(coordinador);
 	}
 
+	/**
+	 * 
+	 * */
 	public void cargarFrame() {
 		desktopFrame.setCoordinador(coordinador);
 		desktopFrame.setVisible(true);
@@ -103,8 +75,12 @@ public class AppFacade {
 
 	}
 
+	/**
+	 * 
+	 * */
 	public void cargarCordinador() {
 		coordinador.setCalculo(calculo);
+		coordinador.setRedSocial(redSocial);
 		coordinador.setDesktopFrame(desktopFrame);
 		coordinador.setUsuariosList(usuariosList);
 		coordinador.setUsuariosForm(usuariosForm);
@@ -112,4 +88,4 @@ public class AppFacade {
 		coordinador.setRelacionesList(relacionesList);
 	}
 
-}
+}// fin clase AppFacade

@@ -6,6 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -21,6 +23,7 @@ import controlador.Coordinador;
 import datos.UsuarioRepetidoException;
 import modelo.Genero;
 import modelo.NivelAcademico;
+import modelo.Relacion;
 import modelo.Usuario;
 import util.Validation;
 
@@ -79,7 +82,7 @@ public class UsuariosForm extends JDialog {
 		lblNombre.setBounds(42, 55, 107, 14);
 		contentPane.add(lblNombre);
 
-		jtfNombre = new JTextField();
+		jtfNombre = new JTextField(15);
 		jtfNombre.setBounds(159, 55, 86, 20);
 		contentPane.add(jtfNombre);
 		jtfNombre.setColumns(10);
@@ -243,8 +246,18 @@ public class UsuariosForm extends JDialog {
 				int resp = JOptionPane.showConfirmDialog(null, "Est� seguro que borra este registro?", "Confirmar",
 						JOptionPane.YES_NO_OPTION);
 				if (JOptionPane.OK_OPTION == resp) {
+					List<Relacion> relaciones = new ArrayList<Relacion>();//
+					relaciones.addAll(coordinador.listaRelaciones()); // -- copia de las relaciones
+					for (Relacion relacion : relaciones) {
+						if (relacion.getUsr1().equals(new Usuario(jtfCodigo.getText(), null, null, null, null, null))
+								|| relacion.getUsr2()
+										.equals(new Usuario(jtfCodigo.getText(), null, null, null, null, null)))
+							coordinador.borrarRelacion(relacion);
+					}
+					logger.info("Relaciones posibles borradas");
 					coordinador.borrarUsuario(new Usuario(jtfCodigo.getText(), null, null, null, null, null));
 					logger.info("Usuario borrado");
+
 				}
 				return;
 			}
@@ -258,7 +271,7 @@ public class UsuariosForm extends JDialog {
 			lblErrorLocalidad.setText("");
 			lblErrorNivelAcademico.setText("");
 
-			// validar nombre
+			// valisaddar nombre
 			String nombre = jtfNombre.getText().trim();
 			if (nombre.isEmpty()) {
 				lblErrorNombre.setText("Campo obligatorio");

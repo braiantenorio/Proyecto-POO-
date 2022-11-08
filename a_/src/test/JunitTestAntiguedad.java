@@ -16,13 +16,14 @@ import negocio.Calculo;
 import negocio.UsuarioNoValidoException;
 import net.datastructures.Map;
 import net.datastructures.TreeMap;
+import net.datastructures.Vertex;
 
 public class JunitTestAntiguedad {
 
 	TreeMap<String, Usuario> usuarios = new TreeMap<>();
 	List<Relacion> relaciones = new ArrayList<>();
 	Calculo calculo;
-	Map<String,Usuario> mapUsr;
+	Map<String, Vertex<Usuario>> mapUsr;
 	List<Relacion> listRel;
 
 	@Before
@@ -44,12 +45,13 @@ public class JunitTestAntiguedad {
 
 	@Test (expected = UsuarioNoValidoException.class)
 	public void testException1() {
+		//usuarios null
 		calculo.antiguedad(null, null);
 	}
 	
 	@Test (expected = UsuarioNoValidoException.class)
 	public void testException2() {
-		Usuario usr1 = mapUsr.get("102");
+		Usuario usr1 = mapUsr.get("102").getElement();
 		// USUARIOS SIN RELACION ALGUNA
 		Usuario usr2 = new Usuario("1", "juan", LocalDate.of(2002, 8, 23), Genero.valueOf("M"), null, null);
 		calculo.antiguedad(usr1, usr2);

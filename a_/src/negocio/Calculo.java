@@ -26,7 +26,11 @@ import servicio.RelacionServiceImp;
 import servicio.UsuarioService;
 import servicio.UsuarioServiceImp;
 
-public class Calculo {
+/**
+ * 
+ * @see Coordinador
+ * */
+public final class Calculo {
 
 	private static Calculo calculo = null;
 
@@ -37,25 +41,16 @@ public class Calculo {
 
 	private Coordinador coordinador;
 
+	// borrar
 	private Map<String, Usuario> usuarios;
 	private List<Relacion> relaciones;
 	private UsuarioService usuarioService;
 	private RelacionService relacionService;
 
-	private Calculo() {
-
-		usuarios = new TreeMap<String, Usuario>();
-		relaciones = new ArrayList<Relacion>();
-
-		usuarioService = new UsuarioServiceImp();
-		usuarios = usuarioService.buscarTodos();
-		relacionService = new RelacionServiceImp();
-		relaciones.addAll(relacionService.buscarTodos());
-
-	}
-
 	/**
-	 * @return Calculo
+	 * Acceso global a la clase.
+	 * 
+	 * @return La unica instancia de la clase
 	 */
 	public static Calculo getCalculo() {
 		if (calculo == null) {
@@ -64,10 +59,32 @@ public class Calculo {
 		return calculo;
 	}
 
+	/**
+	 * Constructor
+	 * 
+	 * @see getCalculo
+	 */
+	private Calculo() {
+//		usuarios = new TreeMap<String, Usuario>();
+//		relaciones = new ArrayList<Relacion>();
+//
+//		usuarioService = new UsuarioServiceImp();
+//		usuarios = usuarioService.buscarTodos();
+//		relacionService = new RelacionServiceImp();
+//		relaciones.addAll(relacionService.buscarTodos());
+	}
+
+	/**
+	 * Instancia el grafo redSocial, con los usuarios y las posibles relaciones.
+	 * 
+	 * @param usuarios   Un mapa de los usuarios con el ID como clave.
+	 * @param relaciones Una lista de las relaciones.
+	 */
 	public void calculoDatos(TreeMap<String, Usuario> usuarios, List<Relacion> relaciones) {
 		// crea el grafo
 		redSocial = new AdjacencyMapGraph<>(false);
 		vertices = new TreeMap<String, Vertex<Usuario>>();
+
 		for (Entry<String, Usuario> usuario : usuarios.entrySet())
 			vertices.put(usuario.getKey(), redSocial.insertVertex(usuario.getValue()));
 
@@ -168,25 +185,6 @@ public class Calculo {
 	}
 
 	/**
-	 * Muestra todos los usuarios de la red social
-	 * 
-	 * @return List<Usuario> con todos los usuarios
-	 */
-	public Map<String, Usuario> mostrarUsuarios() {
-		return usuarios;
-
-	}
-
-	/**
-	 * Muestra todas las relaciones de la red social
-	 * 
-	 * @return List<Relacion> con todos las relacion
-	 */
-	public List<Relacion> mostrarRelaciones() {
-		return relaciones;
-	}
-
-	/**
 	 * Mostrar los amigos de un usuario determinado.
 	 * 
 	 * @param usr El codigo del usuario
@@ -212,8 +210,10 @@ public class Calculo {
 	}
 
 	/**
-	 * Ver para cada vértice la suma de la interacción. Los usuarios que están más
-	 * densamente conectados son acuerdo a la interacción diaria que tienen
+	 * Ver para cada vértice la suma de la interacción.
+	 * 
+	 * Los usuarios que están más densamente conectados de acuerdo a la interacción
+	 * diaria que tienen
 	 * 
 	 * @return Lista con Usuario y Interaccion
 	 */
@@ -222,42 +222,41 @@ public class Calculo {
 		int interaccion;
 
 		// obtener los usuarios con sus interacciones
-		for (Entry<String, Usuario> usu : mostrarUsuarios().entrySet()) {
-			Usuario usuario = usu.getValue();
+		for (Entry<String, Vertex<Usuario>> usu : mostrarUsuarios().entrySet()) {
+			Usuario usuario = usu.getValue().getElement();
 			interaccion = 0;
-			for (Relacion relacion : mostrarRelaciones()) {
+			for (Relacion relacion : relaciones()) {
 				if (usuario.equals(relacion.getUsr1()) || usuario.equals(relacion.getUsr2()))
 					interaccion += relacion.gettInterDiaria();
 			}
 			interacciones.put(usuario, interaccion);
-
 		}
-
+		// crea lista con los usuarios y sus interacciones diarias
 		List<Entry<Usuario, Integer>> lista = new ArrayList<Entry<Usuario, Integer>>();
+		// inserta en lista
 		for (Entry<Usuario, Integer> inter : interacciones.entrySet())
 			lista.add(inter);
-
-		// orden
+		// ordena la lista
 		Collections.sort(lista, new Comparator<Entry<Usuario, Integer>>() {
 			@Override
 			public int compare(Entry<Usuario, Integer> arg0, Entry<Usuario, Integer> arg1) {
 				return arg0.getValue() > arg1.getValue() ? -1 : arg0.getValue() < arg1.getValue() ? 1 : 0;
 			}
 		});
-
 		return lista;
 	}
 
 	/**
 	 * Los amigos de los amigos de un usuario.
 	 * 
-	 * Tener en cuenta uno o mas atributos de los arcos con un peso dado
-	 * (parametrizado).
+	 * Tiene en cuenta atributos de los arcos con un peso Ej.: cantidad de like *
+	 * 0.4 + tiempo de interacción * 1.5
 	 * 
-	 * Ej.: cantidad de like * 0.4 + tiempo de interacción * 1.5
+	 * @param usr El ID de un usuario
+	 * @throws UsuarioNoValidoException Si usr es null, o no existe el Usuario en la
+	 *                                  red.
 	 * 
-	 * @param usr
-	 * @return List<Usuario>
+	 * @return Lista con los amigos de los amigos del usuario
 	 */
 	public List<Usuario> sugerenciaAmistad(String usr) {
 		List<Usuario> sugerencias = new ArrayList<Usuario>();
@@ -295,22 +294,30 @@ public class Calculo {
 	public Usuario busquedaUsuario(String cod) {
 		if (cod == null)
 			throw new UsuarioNoValidoException();
-		if (usuarios.get(cod) == null)
+		if (vertices.get(cod) == null)
 			throw new UsuarioNoValidoException();
-		return usuarios.get(cod);
+		return vertices.get(cod).getElement();
 	}
 
 	/**
-	 * @return
+	 * Busca una relacion segun dos usuarios.
+	 * 
+	 * @param usr1 El usuario 'A'.
+	 * @param usr2 El usuario 'B'.
+	 * 
+	 * @throws UsuarioNoValidoException  si los usuarios son nulos, o no pertenecen
+	 *                                   a la red
+	 * @throws RelacionNoValidaException si la relacion no pertenece a la red.
+	 * @return la relacion si existe.
 	 */
 	public Relacion busquedaRelacion(Usuario usr1, Usuario usr2) {
-		Relacion relacion = new Relacion(usr1, usr2, 0, 0, null);
 		if (usr1 == null || usr2 == null)
 			throw new UsuarioNoValidoException();
 		if (vertices.get(usr1.getCodigo()) == null || vertices.get(usr2.getCodigo()) == null)
 			throw new UsuarioNoValidoException();
 
-		for (Relacion relac : mostrarRelaciones()) {
+		Relacion relacion = new Relacion(usr1, usr2, 0, 0, null);
+		for (Relacion relac : relaciones()) {
 			if (relac.equals(relacion))
 				return relac;
 		}
@@ -318,18 +325,64 @@ public class Calculo {
 	}
 
 	/**
-	 * @param relacion  la relacion a considerar
-	 * @param parametro el criterio minimo a cumplir en la relacion
+	 * @param relacion  La relacion a considerar
+	 * @param parametro El criterio minimo a cumplir en la relacion
+	 * @return si la relacion cumple con los criterios establecidos.
 	 */
 	private boolean buenaRelacion(Relacion relacion, double parametro) {
 		return parametro < (relacion.getLikes() * .4 + relacion.gettInterDiaria() * 1.5);
 	}
 
+	/**
+	 * 
+	 * 
+	 * @return La lista de las relaciones que forman parte del grafo.
+	 */
+	public List<Relacion> relaciones() {
+		List<Relacion> redRelaciones = new ArrayList<>();
+
+		for (Edge<Relacion> relacion : redSocial.edges()) {
+			if (!redRelaciones.contains(relacion.getElement()))
+				redRelaciones.add(relacion.getElement());
+		}
+
+		return redRelaciones;
+	}
+
+	
+	// borrar todo lo continuo
+	/**
+	 * Muestra todos los usuarios de la red social.
+	 * 
+	 * @return Mapa con todos los usuarios, clave el ID del usuario.
+	 */
+	public Map<String, Vertex<Usuario>> mostrarUsuarios() {
+		return vertices;
+
+	}
+
+	/**
+	 * Muestra todas las relaciones de la red social.
+	 * 
+	 * @return Una lista con todos las relacion.
+	 */
+	public List<Relacion> mostrarRelaciones() {
+		return relaciones;
+	}
+
+	/**
+	 * @param coordinador El coordinador a establecer
+	 */
 	public void setCoordinador(Coordinador coordinador) {
 		this.coordinador = coordinador;
 	}
 
 	// DAO
+	/**
+	 * Modifica un Usuario existente
+	 * 
+	 * @param usuario El usuario a modificar
+	 */
 	public void modificarUsuario(Usuario usuario) {
 		vertices.put(usuario.getCodigo(), vertices.get(usuario.getCodigo()));
 
@@ -337,7 +390,12 @@ public class Calculo {
 		usuarioService.actualizar(usuario);
 	}
 
-	// .
+	/**
+	 * Agrega un Usuario no existente, si existe lanza excepcion
+	 * 
+	 * @throws RelacionNoValidaException si la relacion ya existe
+	 * @param usuario El usuario a agregar
+	 */
 	public void agregarUsuario(Usuario usuario) {
 		if (vertices.get(usuario.getCodigo()) != null)
 			throw new UsuarioRepetidoException();
@@ -347,7 +405,11 @@ public class Calculo {
 		usuarioService.insertar(usuario);
 	}
 
-	//
+	/**
+	 * Borra un usuario existente.
+	 * 
+	 * @param usuario El usuario a borrar
+	 */
 	public void borrarUsuario(Usuario usuario) {
 		if (vertices.get(usuario.getCodigo()) == null)
 			throw new UsuarioNoValidoException();
@@ -356,14 +418,25 @@ public class Calculo {
 		usuarioService.borrar(usuario);
 	}
 
-	private Relacion buscarRelacion(Relacion relacion) {
+	/**
+	 * Busca la misma relacion en las distintas relaciones.
+	 * 
+	 * @param relacion La relacion que se busca.
+	 * @return si pertenece a la lista la misma Relacion, sino null
+	 */
+	public Relacion buscarRelacion(Relacion relacion) {
 		int pos = relaciones.indexOf(relacion);
 		if (pos == -1)
 			return null;
 		return relaciones.get(pos);
 	}
 
-	//
+	/**
+	 * Agrega una Relacion no existente, si existe lanza excepcion
+	 * 
+	 * @throws RelacionNoValidaException si la relacion ya existe
+	 * @param relacion La relacion a agregar
+	 */
 	public void agregarRelacion(Relacion relacion) {
 		if (relaciones.contains(relacion))
 			throw new RelacionRepetidaException();
@@ -371,7 +444,11 @@ public class Calculo {
 		relacionService.insertar(relacion);
 	}
 
-	//
+	/**
+	 * Borra una Relacion existente
+	 * 
+	 * @param relacion La relacion a borrar
+	 */
 	public void borrarRelacion(Relacion relacion) {
 		Relacion rl = buscarRelacion(relacion);
 		relaciones.remove(rl);
@@ -379,7 +456,11 @@ public class Calculo {
 
 	}
 
-	//
+	/**
+	 * Modifica una Relacion existente
+	 * 
+	 * @param relacion La relacion a modificar
+	 */
 	public void modificarRelacion(Relacion relacion) {
 		int pos = relaciones.indexOf(relacion);
 		relaciones.set(pos, relacion);
@@ -387,7 +468,4 @@ public class Calculo {
 
 	}
 
-	public void actualizarDatos() {
-		calculoDatos((TreeMap<String, Usuario>) usuarioService.buscarTodos(), relacionService.buscarTodos());
-	}
 }

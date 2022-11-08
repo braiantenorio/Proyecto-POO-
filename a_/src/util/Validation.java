@@ -33,6 +33,7 @@ public class Validation {
 
 	}
 
+	@Deprecated
 	public static LocalDate convertToLocalDateViaMilisecond(Date dateToConvert) {
 		return Instant.ofEpochMilli(dateToConvert.getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
 	}

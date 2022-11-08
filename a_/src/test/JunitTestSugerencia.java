@@ -46,7 +46,7 @@ public class JunitTestSugerencia {
 	@Test
 	public void testDistinto() {
 		// que no sugiera al mismo usuario
-		Usuario usuario = calculo.busquedaUsuario("101");
+		Usuario usuario = calculo.busquedaUsuario("103");
 
 		listUsr = calculo.sugerenciaAmistad(usuario.getCodigo());
 		for (Usuario usr : listUsr)
@@ -56,7 +56,8 @@ public class JunitTestSugerencia {
 	@Test
 	public void testSugerencia() {
 		// no sugerir amigos compartidos
-		Usuario usuario = calculo.busquedaUsuario("101");
+		Usuario usuario = calculo.busquedaUsuario("103");
+
 		listUsr = calculo.sugerenciaAmistad(usuario.getCodigo());// sugerencias
 
 		Map<Usuario, Integer> amigos = calculo.mapaAmigos(usuario.getCodigo());// amigos
@@ -65,8 +66,6 @@ public class JunitTestSugerencia {
 			assertNull(amigos.get(usr));
 		}
 	}
-	
-	
 
 	@Test(expected = UsuarioNoValidoException.class)
 	public void testExceptionNulo() {
