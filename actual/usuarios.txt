@@ -1,0 +1,5 @@
+101;UsuarioA;1989;9;8;F;m;NULO;
+102;UsuarioC;1998;1;10;M;M;NULO;
+103;Usuario;1989;9;1;X;o;NULO;
+104;JUAN;1991;1;1;F;P;NULO;
+108;Pedro;1978;9;9;M;ll;NULO;
