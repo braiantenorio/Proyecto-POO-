@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <typeInfoHistroy>
-    <typeInfo handle="=a_/src&lt;modelo{Relacion.java[Relacion" modifiers="1" timestamp="1667071822242"/>
-    <typeInfo handle="=a_/src&lt;test{testCalculo.java[testCalculo" modifiers="1" timestamp="1666972519182"/>
-    <typeInfo handle="=a_/src&lt;controlador{Aplicacion.java[Aplicacion" modifiers="1" timestamp="1666932256029"/>
+    <typeInfo handle="=a_/src&lt;modelo{Relacion.java[Relacion" modifiers="1" timestamp="1667781795914"/>
+    <typeInfo handle="=a_/src&lt;controlador{Aplicacion.java[Aplicacion" modifiers="1" timestamp="1667853002201"/>
     <typeInfo handle="=a_/src&lt;dao{RelacionDAO.java[RelacionDAO" modifiers="513" timestamp="1667057674384"/>
     <typeInfo handle="=a_/src&lt;servicio{UsuarioService.java[UsuarioService" modifiers="513" timestamp="1667061537687"/>
     <typeInfo handle="=a_/src&lt;dao{UsuarioDAO.java[UsuarioDAO" modifiers="513" timestamp="1667061577431"/>
     <typeInfo handle="=a_/\/usr\/lib\/jvm\/java-17-openjdk\/lib\/jrt-fs.jar`java.desktop=/module=/true=/=/javadoc_location=/https:\/\/docs.oracle.com\/en\/java\/javase\/17\/docs\/api\/=/&lt;javax.swing(JDialog.class[JDialog" modifiers="33" timestamp="1666126011000"/>
     <typeInfo handle="=a_/src&lt;servicio{RelacionService.java[RelacionService" modifiers="513" timestamp="1666992882083"/>
-    <typeInfo handle="=a_/src&lt;negocio{RedSocial.java[RedSocial" modifiers="1" timestamp="1667072019645"/>
     <typeInfo handle="=a_/src&lt;dao.secuencial{UsuarioSecuencialDAO.java[UsuarioSecuencialDAO" modifiers="1" timestamp="1667153936015"/>
 </typeInfoHistroy>

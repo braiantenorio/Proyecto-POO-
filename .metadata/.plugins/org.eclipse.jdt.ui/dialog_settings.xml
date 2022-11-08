@@ -3,7 +3,11 @@
 	<item key="org.eclipse.jdt.ui.last.selected.jre.kind2" value="2"/>
 	<item key="org.eclipse.jdt.ui.last.selected.execution.enviroment" value="JavaSE-17"/>
 	<item key="UserLibraryLoadSaveDialog.size" value="560,714"/>
-	<item key="org.eclipse.jdt.ui.lastextjar" value="/home/matias/Documents/POO/ISFPP/Ejemplos - ISFPP-20221024/log4j"/>
+	<item key="org.eclipse.jdt.ui.lastextjar" value="/home/matias/Proyecto-POO-/actual"/>
+	<item key="TypeHierarchyViewPart.hierarchyview" value="2"/>
+	<item key="TypeHierarchyViewPart.qualifiednames" value="false"/>
+	<item key="TypeHierarchyViewPart.linkeditors" value="false"/>
+	<item key="TypeHierarchyViewPart.orientation" value="3"/>
 	<section name="org.eclipse.jdt.internal.ui.packageview.PackageExplorerPart">
 		<item key="group_libraries" value="true"/>
 		<item key="layout" value="2"/>
@@ -23,6 +27,7 @@
 	</section>
 	<section name="OptionalMessageDialog.hide.">
 		<item key="org.eclipse.jdt.ui.typecomment.deprecated" value="true"/>
+		<item key="configure_problem_severity_dialog_id" value="false"/>
 	</section>
 	<section name="NewClassWizardPage">
 		<item key="create_constructor" value="false"/>
@@ -74,7 +79,7 @@
 		<item key="DIALOG_FONT_NAME" value="1|Noto Sans|11.0|0|GTK|1|"/>
 	</section>
 	<section name="ClasspathContainerSelectionPage">
-		<item key="index" value="4"/>
+		<item key="index" value="1"/>
 	</section>
 	<section name="JavaSearchPage">
 		<item key="CASE_SENSITIVE" value="false"/>

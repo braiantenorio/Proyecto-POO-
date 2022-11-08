@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-    <fullyQualifiedTypeName name="java.awt.FlowLayout"/>
-    <fullyQualifiedTypeName name="javax.swing.ScrollPaneLayout"/>
-    <fullyQualifiedTypeName name="javax.swing.ScrollPaneConstants"/>
-    <fullyQualifiedTypeName name="negocio.RelacionNoValidaException"/>
-    <fullyQualifiedTypeName name="javax.management.loading.PrivateClassLoader"/>
     <fullyQualifiedTypeName name="negocio.Calculo"/>
     <fullyQualifiedTypeName name="gui.DesktopFrame"/>
     <fullyQualifiedTypeName name="datos.CargarDatos"/>
@@ -31,7 +26,6 @@
     <fullyQualifiedTypeName name="util.Validation"/>
     <fullyQualifiedTypeName name="gui.UsuariosList"/>
     <fullyQualifiedTypeName name="gui.UsuariosForm"/>
-    <fullyQualifiedTypeName name="negocio.RedSocial"/>
     <fullyQualifiedTypeName name="net.datastructures.Vertex"/>
     <fullyQualifiedTypeName name="javax.swing.JButton"/>
     <fullyQualifiedTypeName name="java.util.ResourceBundle"/>
@@ -39,16 +33,13 @@
     <fullyQualifiedTypeName name="servicio.UsuarioService"/>
     <fullyQualifiedTypeName name="servicio.RelacionService"/>
     <fullyQualifiedTypeName name="dao.secuencial.RelacionSecuencialDAO"/>
-    <fullyQualifiedTypeName name="java.util.ArrayList"/>
     <fullyQualifiedTypeName name="servicio.UsuarioServiceImp"/>
-    <fullyQualifiedTypeName name="controlador.Coordinador"/>
     <fullyQualifiedTypeName name="java.util.Formatter"/>
     <fullyQualifiedTypeName name="controlador.RelacionesList"/>
     <fullyQualifiedTypeName name="java.lang.System"/>
     <fullyQualifiedTypeName name="javax.swing.JTable"/>
     <fullyQualifiedTypeName name="gui.RelacionesForm"/>
     <fullyQualifiedTypeName name="modelo.Relacion"/>
-    <fullyQualifiedTypeName name="gui.RelacionesList"/>
     <fullyQualifiedTypeName name="modelo.Usuario"/>
     <fullyQualifiedTypeName name="gui.Constantes"/>
     <fullyQualifiedTypeName name="java.util.Date"/>
@@ -56,8 +47,17 @@
     <fullyQualifiedTypeName name="net.datastructures.Entry"/>
     <fullyQualifiedTypeName name="datos.UsuarioRepetidoException"/>
     <fullyQualifiedTypeName name="datos.RelacionRepetidaException"/>
-    <fullyQualifiedTypeName name="negocio.UsuarioNoValidoException"/>
     <fullyQualifiedTypeName name="dao.UsuarioDAO"/>
     <fullyQualifiedTypeName name="java.io.EOFException"/>
+    <fullyQualifiedTypeName name="org.apache.log4j.Logger"/>
+    <fullyQualifiedTypeName name="java.lang.IllegalArgumentException"/>
+    <fullyQualifiedTypeName name="gui.RelacionesList"/>
     <fullyQualifiedTypeName name="java.util.List"/>
+    <fullyQualifiedTypeName name="java.lang.Deprecated"/>
+    <fullyQualifiedTypeName name="java.util.ArrayList"/>
+    <fullyQualifiedTypeName name="controlador.Coordinador"/>
+    <fullyQualifiedTypeName name="negocio.RedSocial"/>
+    <fullyQualifiedTypeName name="negocio.UsuarioNoValidoException"/>
+    <fullyQualifiedTypeName name="java.lang.NullPointerException"/>
+    <fullyQualifiedTypeName name="negocio.RelacionNoValidaException"/>
 </qualifiedTypeNameHistroy>
