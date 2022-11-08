@@ -1,0 +1,38 @@
+08:16:23,411  INFO UsuariosForm:257 - Relaciones posibles borradas
+08:16:23,416  INFO UsuariosForm:259 - Usuario borrado
+08:18:16,694 ERROR UsuariosForm:334 - Campos no v�lidos!
+08:18:21,109  INFO UsuariosForm:355 - Usuario Agregado
+08:18:45,247  INFO UsuariosForm:355 - Usuario Agregado
+16:59:13,279 ERROR DesktopFrame:396 - Relaciones no existen!
+17:15:48,186 DEBUG RelacionesForm:245 - Ingresa validar campos
+17:15:48,206  INFO RelacionesForm:321 - Relacion Agregada
+17:16:02,461  INFO UsuariosForm:257 - Relaciones posibles borradas
+17:16:02,464  INFO UsuariosForm:259 - Usuario borrado
+18:06:04,318  INFO UsuariosForm:355 - Usuario Agregado
+18:06:25,698 ERROR UsuariosForm:345 - Este usuario ya existe!
+18:06:31,817  INFO UsuariosForm:355 - Usuario Agregado
+18:07:15,322 DEBUG RelacionesForm:245 - Ingresa validar campos
+18:07:15,328  INFO RelacionesForm:321 - Relacion Agregada
+18:07:38,742 DEBUG RelacionesForm:245 - Ingresa validar campos
+18:07:38,749  INFO RelacionesForm:321 - Relacion Agregada
+18:07:48,363  INFO UsuariosForm:257 - Relaciones posibles borradas
+18:07:48,364  INFO UsuariosForm:259 - Usuario borrado
+18:28:38,872 DEBUG RelacionesForm:245 - Ingresa validar campos
+18:28:38,899  INFO RelacionesForm:321 - Relacion Agregada
+18:28:54,331  INFO RelacionesForm:235 - Relacion borrada
+18:32:33,543 DEBUG RelacionesForm:245 - Ingresa validar campos
+18:33:38,009 DEBUG RelacionesForm:245 - Ingresa validar campos
+18:33:38,027 ERROR RelacionesForm:293 - Campos no v�lidos!
+18:33:52,113 DEBUG RelacionesForm:245 - Ingresa validar campos
+18:36:56,067  INFO UsuariosForm:355 - Usuario Agregado
+18:37:29,701  INFO UsuariosForm:355 - Usuario Agregado
+18:37:46,247 ERROR UsuariosForm:334 - Campos no v�lidos!
+18:37:46,427 ERROR UsuariosForm:334 - Campos no v�lidos!
+18:38:09,207 ERROR UsuariosForm:334 - Campos no v�lidos!
+18:38:17,033 ERROR UsuariosForm:345 - Este usuario ya existe!
+18:38:30,803  INFO UsuariosForm:355 - Usuario Agregado
+18:40:10,473 DEBUG RelacionesForm:245 - Ingresa validar campos
+18:40:10,479  INFO RelacionesForm:321 - Relacion Agregada
+18:40:29,467 DEBUG RelacionesForm:245 - Ingresa validar campos
+18:40:29,469 ERROR RelacionesForm:312 - Relacion ya existe
+18:40:35,447 DEBUG RelacionesForm:245 - Ingresa validar campos
